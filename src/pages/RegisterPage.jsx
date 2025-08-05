@@ -1,5 +1,5 @@
-import { Input } from "@heroui/react"
-
+import { DatePicker, Input } from "@heroui/react"
+import { getLocalTimeZone, today } from "@internationalized/date";
 
 
 
@@ -28,94 +28,76 @@ function RegisterPage() {
                     {/* Register Form with animations */}
                     <form className="space-y-4 sm:space-y-5">
                         {/* Name Field */}
-                        {/* <div className="space-y-1.5 sm:space-y-2 transform transition-all duration-500 hover:translate-x-2"> */}
-                            {/* <label
-                                className="block text-xs sm:text-sm font-medium text-gray-200 dark:text-gray-300 transition-all duration-300 hover:text-purple-200"
-                                htmlFor="name"
-                            >
-                                Full Name
-                            </label> */}
-                            {/* <Input
-                                id="name"
-                                type="text"
-                                placeholder="Enter your full name"
-                                
-                                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg text-white dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 text-sm sm:text-base hover:bg-white/15 dark:hover:bg-white/10 hover:border-white/30 dark:hover:border-white/20 hover:shadow-lg transform hover:scale-105 focus:scale-105 hover:-translate-y-1 focus:-translate-y-1 animate-pulse hover:animate-none focus:animate-none"
-                                classNames={
-                                    {   
-                                        // base:'text-white',
-                                        inputWrapper:'bottom-0 bg-transparent data-[hover=true]:bg-transparent data-[focus=true]:bg-transparent'
-                                    }
-                                }
-                            /> */}
-                            <Input
-                                id="name"
-                                type="text"
-                                label="Full Name"
-                                labelPlacement="outside"
-                                placeholder="Enter your full name"
-                                className="transform transition-all duration-500 hover:translate-x-2"
-                                classNames={{
-                                    base: "space-y-1.5 sm:space-y-2",
-                                    label: "text-xs sm:text-sm font-medium text-gray-200 dark:text-gray-300 transition-all duration-300 hover:text-purple-200 group-data-[filled-within=true]:text-gray-200 pb-1",
-                                    input: "w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg text-white dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 text-sm sm:text-base hover:bg-white/15 dark:hover:bg-white/10 hover:border-white/30 dark:hover:border-white/20 hover:shadow-lg transform hover:scale-105 focus:scale-105 hover:-translate-y-1 focus:-translate-y-1 animate-pulse hover:animate-none focus:animate-none group-data-[has-value=true]:text-white",
-                                    inputWrapper: "bg-transparent border-none shadow-none p-0 h-auto data-[hover=true]:bg-transparent data-[focus=true]:bg-transparent group-data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0",
+                        <Input
+                            name="name"
+                            type="text"
+                            label="Full Name"
+                            labelPlacement="outside"
+                            placeholder="Enter your full name"
+                            className="transform transition-all duration-500 hover:translate-x-2"
+                            classNames={{
+                                base: "space-y-1.5 sm:space-y-2 pt-4",
+                                label: "text-xs sm:text-sm font-medium text-gray-200 dark:text-gray-300 transition-all duration-300 hover:text-purple-200 group-data-[filled-within=true]:text-gray-200 pb-1",
+                                input: "w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg text-white dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 text-sm sm:text-base hover:bg-white/15 dark:hover:bg-white/10 hover:border-white/30 dark:hover:border-white/20 hover:shadow-lg transform hover:scale-105 focus:scale-105 hover:-translate-y-1 focus:-translate-y-1 animate-pulse hover:animate-none focus:animate-none group-data-[has-value=true]:text-white placeholder:text-gray-200",
+                                inputWrapper: "bg-transparent border-none shadow-none p-0 h-auto data-[hover=true]:bg-transparent data-[focus=true]:bg-transparent group-data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0",
 
-                                }}
-                            />
-                        {/* </div> */}
+                            }}
+                        />
 
 
                         {/* Email Field */}
-                        <div className="space-y-1.5 sm:space-y-2 transform transition-all duration-500 hover:-translate-x-2">
-                            <label
-                                className="block text-xs sm:text-sm font-medium text-gray-200 dark:text-gray-300 transition-all duration-300 hover:text-purple-200"
-                                htmlFor="email"
-                            >
-                                Email Address
-                            </label>
-                            <input
-                                id="email"
-                                type="email"
-                                placeholder="Enter your email"
-                                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg text-white dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 text-sm sm:text-base hover:bg-white/15 dark:hover:bg-white/10 hover:border-white/30 dark:hover:border-white/20 hover:shadow-lg transform hover:scale-105 focus:scale-105 hover:-translate-y-1 focus:-translate-y-1 animate-pulse hover:animate-none focus:animate-none"
-                            />
-                        </div>
+                        <Input
+                            name="email"
+                            type="text"
+                            label="Email"
+                            labelPlacement="outside"
+                            placeholder="Enter your email"
+                            className="transform transition-all duration-500 hover:-translate-x-2"
+                            classNames={{
+                                base: "space-y-1.5 sm:space-y-2 pt-4",
+                                label: "text-xs sm:text-sm font-medium text-gray-200 dark:text-gray-300 transition-all duration-300 hover:text-purple-200 group-data-[filled-within=true]:text-gray-200 pb-1",
+                                input: "w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg text-white dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 text-sm sm:text-base hover:bg-white/15 dark:hover:bg-white/10 hover:border-white/30 dark:hover:border-white/20 hover:shadow-lg transform hover:scale-105 focus:scale-105 hover:-translate-y-1 focus:-translate-y-1 animate-pulse hover:animate-none focus:animate-none group-data-[has-value=true]:text-white placeholder:text-gray-200",
+                                inputWrapper: "bg-transparent border-none shadow-none p-0 h-auto data-[hover=true]:bg-transparent data-[focus=true]:bg-transparent group-data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0",
+
+                            }}
+                        />
 
                         {/* Password Field */}
-                        <div className="space-y-1.5 sm:space-y-2 transform transition-all duration-500 hover:translate-x-2">
-                            <label
-                                className="block text-xs sm:text-sm font-medium text-gray-200 dark:text-gray-300 transition-all duration-300 hover:text-purple-200"
-                                htmlFor="password"
-                            >
-                                Password
-                            </label>
-                            <input
-                                id="password"
-                                type="password"
-                                placeholder="Create a password"
-                                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg text-white dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 text-sm sm:text-base hover:bg-white/15 dark:hover:bg-white/10 hover:border-white/30 dark:hover:border-white/20 hover:shadow-lg transform hover:scale-105 focus:scale-105 hover:-translate-y-1 focus:-translate-y-1 animate-pulse hover:animate-none focus:animate-none"
-                            />
-                        </div>
+                        <Input
+                            name="password"
+                            type="text"
+                            label="Password"
+                            labelPlacement="outside"
+                            placeholder="Enter your Password"
+                            className="transform transition-all duration-500 hover:translate-x-2"
+                            classNames={{
+                                base: "space-y-1.5 sm:space-y-2 pt-4",
+                                label: "text-xs sm:text-sm font-medium text-gray-200 dark:text-gray-300 transition-all duration-300 hover:text-purple-200 group-data-[filled-within=true]:text-gray-200 pb-1",
+                                input: "w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg text-white dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 text-sm sm:text-base hover:bg-white/15 dark:hover:bg-white/10 hover:border-white/30 dark:hover:border-white/20 hover:shadow-lg transform hover:scale-105 focus:scale-105 hover:-translate-y-1 focus:-translate-y-1 animate-pulse hover:animate-none focus:animate-none group-data-[has-value=true]:text-white placeholder:text-gray-200",
+                                inputWrapper: "bg-transparent border-none shadow-none p-0 h-auto data-[hover=true]:bg-transparent data-[focus=true]:bg-transparent group-data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0",
+
+                            }}
+                        />
 
                         {/* Confirm Password Field */}
-                        <div className="space-y-1.5 sm:space-y-2 transform transition-all duration-500 hover:-translate-x-2">
-                            <label
-                                className="block text-xs sm:text-sm font-medium text-gray-200 dark:text-gray-300 transition-all duration-300 hover:text-purple-200"
-                                htmlFor="rePassword"
-                            >
-                                Confirm Password
-                            </label>
-                            <input
-                                id="rePassword"
-                                type="password"
-                                placeholder="Confirm your password"
-                                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg text-white dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 text-sm sm:text-base hover:bg-white/15 dark:hover:bg-white/10 hover:border-white/30 dark:hover:border-white/20 hover:shadow-lg transform hover:scale-105 focus:scale-105 hover:-translate-y-1 focus:-translate-y-1 animate-pulse hover:animate-none focus:animate-none"
-                            />
-                        </div>
+                        <Input
+                            name="rePassword"
+                            type="text"
+                            label="Confirm Password"
+                            labelPlacement="outside"
+                            placeholder="Enter your password again"
+                            className="transform transition-all duration-500 hover:-translate-x-2"
+                            classNames={{
+                                base: "space-y-1.5 sm:space-y-2 pt-4",
+                                label: "text-xs sm:text-sm font-medium text-gray-200 dark:text-gray-300 transition-all duration-300 hover:text-purple-200 group-data-[filled-within=true]:text-gray-200 pb-1",
+                                input: "w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg text-white dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 text-sm sm:text-base hover:bg-white/15 dark:hover:bg-white/10 hover:border-white/30 dark:hover:border-white/20 hover:shadow-lg transform hover:scale-105 focus:scale-105 hover:-translate-y-1 focus:-translate-y-1 animate-pulse hover:animate-none focus:animate-none group-data-[has-value=true]:text-white placeholder:text-gray-200",
+                                inputWrapper: "bg-transparent border-none shadow-none p-0 h-auto data-[hover=true]:bg-transparent data-[focus=true]:bg-transparent group-data-[focus-visible=true]:ring-0 data-[focus-visible=true]:ring-offset-0",
+
+                            }}
+                        />
 
                         {/* Date of Birth Field */}
-                        <div className="space-y-1.5 sm:space-y-2 transform transition-all duration-500 hover:translate-x-2">
+                        {/* <div className="space-y-1.5 sm:space-y-2 transform transition-all duration-500 hover:translate-x-2">
                             <label
                                 className="block text-xs sm:text-sm font-medium text-gray-200 dark:text-gray-300 transition-all duration-300 hover:text-purple-200"
                                 htmlFor="dateOfBirth"
@@ -127,7 +109,24 @@ function RegisterPage() {
                                 type="date"
                                 className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg text-white dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 text-sm sm:text-base hover:bg-white/15 dark:hover:bg-white/10 hover:border-white/30 dark:hover:border-white/20 hover:shadow-lg transform hover:scale-105 focus:scale-105 hover:-translate-y-1 focus:-translate-y-1 animate-pulse hover:animate-none focus:animate-none"
                             />
-                        </div>
+                        </div> */}
+
+                        <DatePicker
+                                label="Date of Birth"
+                                labelPlacement="outside"
+                                maxValue={today(getLocalTimeZone())}
+                                className="transform transition-all duration-500 hover:translate-x-2"
+                                classNames={
+                                    {
+                                        label: "text-xs sm:text-sm font-medium text-gray-200 dark:text-gray-300 transition-all duration-300 hover:text-purple-200 group-data-[filled-within=true]:text-gray-200 pb-1",
+                                        inputWrapper: "w-full min-h-[42px] sm:min-h-[50px] px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 dark:bg-white/2 border border-white/20 dark:border-white/10 rounded-lg text-white dark:text-gray-100 focus-within:outline-none focus-within:ring-2 focus-within:ring-purple-400 dark:focus-within:ring-purple-500 focus-within:border-transparent backdrop-blur-xs transition-all duration-300 hover:bg-white/15 dark:hover:bg-white/10 hover:border-white/30 dark:hover:border-white/20 hover:shadow-lg transform hover:scale-105 focus-within:scale-105 hover:-translate-y-1 focus-within:-translate-y-1 animate-pulse hover:animate-none focus-within:animate-none focus-within:hover:bg-transparent focus-within:bg-transparent",
+                                        segment: "text-gray-200 data-[editable=true]:text-gray-200 placeholder:text-gray-200 data-[editable=true]:data-[placeholder=true]:text-gray-200 data-[editable=true]:focus:text-gray-200",
+                                    }
+                                }
+                                
+
+                            />
+
 
                         {/* Gender Field */}
                         <div className="space-y-1.5 sm:space-y-2 transform transition-all duration-500 hover:-translate-x-2">
@@ -149,12 +148,6 @@ function RegisterPage() {
                                 </option>
                                 <option value="female" className="bg-gray-800 dark:bg-gray-900">
                                     Female
-                                </option>
-                                <option value="other" className="bg-gray-800 dark:bg-gray-900">
-                                    Other
-                                </option>
-                                <option value="prefer-not-to-say" className="bg-gray-800 dark:bg-gray-900">
-                                    Prefer not to say
                                 </option>
                             </select>
                         </div>
