@@ -5,3 +5,11 @@
 @custom-variant dark (&:is(.dark *));
 
 
+@layer utilities
+{
+    /* input::placeholder
+    {
+        @apply text-gray-200;
+        color: #e5e7eb !important;
+    } */
+}
