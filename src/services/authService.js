@@ -15,11 +15,20 @@ export const authApi =
         }
         catch(error)
         {
-            if(!error.response)
-            {
-                return {error: "Network Error"}
-            }
-            return error.response.data
+            return !error.response ? {error: "Network Error"} : error.response.data;
+        }
+    },
+    loginUser: async (formData) => 
+    {
+        try
+        {
+            const { data } = await axios.post(baseUrl+ 'signin', formData);
+            localStorage.setItem('token', data.token)
+            return data;
+        }
+        catch(error)
+        {
+            return !error.response ? {error: "Network Error"} : error.response.data;
         }
     }
 }
