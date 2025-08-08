@@ -2,7 +2,7 @@ import { addToast, Button, Input, Select, SelectItem } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import registerSchema from "../schema/registerSchema";
 import { authApi } from "../services/authService";
 
@@ -16,8 +16,7 @@ import { authApi } from "../services/authService";
 function RegisterPage() {
 
     const [isLoading, setIsLoading] = useState(false);
-    // const [errMsg, setErrMsg] = useState(null);
-    // const [sucMsg, setSucMsg] = useState(null);
+    const navigate = useNavigate()
 
 
 
@@ -38,24 +37,7 @@ function RegisterPage() {
     )
 
 
-
-
-
-    // useEffect(
-    //     () => {
-    //         console.log('MyComponent mounted');
-    //     },
-    //     []
-    // );
-
-
-    // console.log('render MyComponent');
-
-    // console.log(errors)
-
-
     async function submitFormData(formData) {
-        // console.log(formData);
         setIsLoading(true);
         const data = await authApi.registerUser(formData);
         setIsLoading(false);
@@ -79,6 +61,7 @@ function RegisterPage() {
                     color: 'success'
                 }
             )
+            navigate('/login', {viewTransition: true});
         }
 
     }
@@ -229,6 +212,7 @@ function RegisterPage() {
                             Already have an account?{' '}
                             <Link
                                 to="/login"
+                                viewTransition
                                 className="text-purple-600 hover:text-purple-300 dark:text-purple-300 dark:hover:text-purple-200 font-medium transition-all duration-300 hover:underline hover:underline-offset-2 hover:scale-110 inline-block transform hover:-translate-y-1"
                             >
                                 Sign in
