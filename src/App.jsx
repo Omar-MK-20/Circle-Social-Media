@@ -9,18 +9,19 @@ import RegisterPage from './pages/RegisterPage'
 import NotFoundPage from './pages/NotFoundPage'
 import './App.css'
 import MainProtRoute from './protectetdRoutes/MainProtRoute'
+import AuthProtRoute from './protectetdRoutes/AuthProtRoute'
 
 
 const router = createBrowserRouter([
     {
         path: '', element: <AuthLayout />, children: [
-            { path: 'login', element: <LoginPage /> },
-            { path: 'register', element: <RegisterPage /> }
+            { path: 'login', element:<AuthProtRoute><LoginPage /></AuthProtRoute> },
+            { path: 'register', element:<AuthProtRoute> <RegisterPage /></AuthProtRoute> }
         ]
     },
     {
         path: '', element: <MainLayout />, children: [
-            { index: true, element:<MainProtRoute><FeedPage /></MainProtRoute> },
+            { index: true, element: <MainProtRoute><FeedPage /></MainProtRoute> },
             { path: 'profile', element: <MainProtRoute><ProfilePage /></MainProtRoute> },
             { path: 'post-details', element: <MainProtRoute><PostDetailsPage /></MainProtRoute> },
             { path: '*', element: <NotFoundPage /> }
@@ -30,6 +31,13 @@ const router = createBrowserRouter([
 
 
 function App() {
+
+    document.documentElement.classList.toggle(
+        "dark",
+        localStorage.theme === "dark" ||
+        (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches),
+    );
+
 
     return (
         <RouterProvider router={router} />
