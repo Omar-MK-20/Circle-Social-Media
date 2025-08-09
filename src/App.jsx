@@ -8,6 +8,7 @@ import ProfilePage from './pages/ProfilePage'
 import RegisterPage from './pages/RegisterPage'
 import NotFoundPage from './pages/NotFoundPage'
 import './App.css'
+import MainProtRoute from './protectetdRoutes/MainProtRoute'
 
 
 const router = createBrowserRouter([
@@ -19,9 +20,9 @@ const router = createBrowserRouter([
     },
     {
         path: '', element: <MainLayout />, children: [
-            { index: true, element: <FeedPage /> },
-            { path: 'profile', element: <ProfilePage /> },
-            { path: 'post-details', element: <PostDetailsPage /> },
+            { index: true, element:<MainProtRoute><FeedPage /></MainProtRoute> },
+            { path: 'profile', element: <MainProtRoute><ProfilePage /></MainProtRoute> },
+            { path: 'post-details', element: <MainProtRoute><PostDetailsPage /></MainProtRoute> },
             { path: '*', element: <NotFoundPage /> }
         ]
     }
