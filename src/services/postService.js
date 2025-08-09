@@ -19,9 +19,9 @@ export const postApi =
             return data
 
         } 
-        catch (error) 
+        catch (error)
         {
-            return error.response.data;
+            return !error.response ? {error: "Network Error"} : error.response.data;
     
         }
     }
