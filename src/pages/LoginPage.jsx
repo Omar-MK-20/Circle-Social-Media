@@ -50,7 +50,7 @@ function LoginPage() {
                     color: 'success'
                 }
             )
-            navigate('/register', {viewTransition: true});
+            navigate('/', {viewTransition: true});
         }
 
     }
