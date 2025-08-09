@@ -1,10 +1,10 @@
+import { addToast, Button, Input } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { authApi } from "../services/authService";
-import { addToast, Button, Input, Select, SelectItem } from "@heroui/react";
 import { Link, useNavigate } from "react-router-dom";
 import loginSchema from "../schema/loginSchema";
+import { authApi } from "../services/authService";
 
 function LoginPage() {
 
