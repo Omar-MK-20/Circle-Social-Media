@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import avatar from '../assets/avatar.png'
 import {
   Navbar,
@@ -10,35 +10,71 @@ import {
   Dropdown,
   DropdownMenu,
   Avatar,
+  Button,
+  addToast,
 } from "@heroui/react";
 
 
 function NvabarComponent() {
+
+
+  const navigate = useNavigate()
+
+  function handelDarkMode() {
+    if ('theme' in localStorage) {
+      if (localStorage.theme === 'dark') {
+        document.documentElement.classList.remove('dark');
+        localStorage.theme = 'light';
+      }
+      else {
+        document.documentElement.classList.add('dark');
+        localStorage.theme = 'dark';
+      }
+    }
+    else {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        localStorage.theme = 'light';
+        document.documentElement.classList.remove('dark');
+        console.log(window.matchMedia("(prefers-color-scheme: dark)").matches)
+      }
+      else {
+        localStorage.theme = 'dark';
+        document.documentElement.classList.add('dark');
+        console.log(window.matchMedia("(prefers-color-scheme: dark)").matches)
+      }
+    }
+  }
+
+
+  function handleLogout() {
+    localStorage.removeItem('token');
+    navigate('/login', { viewTransition: true })
+    addToast(
+      {
+        title: "Successful Logout",
+        color: 'success'
+      }
+    )
+  }
+
+
+
+
+
+
   return (
-    <Navbar 
+    <Navbar
       shouldHideOnScroll
       className="rounded-b-xl fixed"
-      >
+    >
       <NavbarBrand>
-        <Link to={'/'} className="font-bold text-inherit">CIRLCE</Link>
+        <button onClick={handelDarkMode} className='cursor-pointer'><i className="fa-solid fa-circle-half-stroke"></i></button>
       </NavbarBrand>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link href="#">
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href="#">
-            Customers
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link href="#">
-            Integrations
-          </Link>
-        </NavbarItem>
+        <NavbarBrand>
+          <Link to={'/'} className="font-bold text-inherit">CIRLCE</Link>
+        </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent as="div" justify="end">
@@ -65,7 +101,7 @@ function NvabarComponent() {
             <DropdownItem key="system">System</DropdownItem>
             <DropdownItem key="configurations">Configurations</DropdownItem>
             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-            <DropdownItem key="logout" color="danger">
+            <DropdownItem key="logout" color="danger" onPress={handleLogout}>
               Log Out
             </DropdownItem>
           </DropdownMenu>
