@@ -1,8 +1,11 @@
 import { Outlet } from "react-router-dom"
+import NvabarComponent from "../components/NvabarComponent"
 
 function AuthLayout() {
     return (<>
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 dark:from-purple-950 dark:via-blue-950 dark:to-indigo-950 flex items-center justify-center p-3 sm:p-4 overflow-hidden relative">
+
+        <NvabarComponent />
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 dark:from-purple-950 dark:via-blue-950 dark:to-indigo-950 flex items-center justify-center p-3 sm:p-4 overflow-hidden relative ">
             {/* Animated background circles */}
             <div className="absolute inset-0 overflow-hidden">
                 {/* Main floating circles */}
@@ -40,8 +43,9 @@ function AuthLayout() {
                     style={{ animationDelay: '0.8s' }}
                 ></div>
             </div>
-
-            <Outlet />
+            <div className="w-full flex justify-center mt-20">
+                <Outlet />
+            </div>
         </div>
     </>)
 }
