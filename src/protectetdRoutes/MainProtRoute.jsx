@@ -1,9 +1,9 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 
-function MainProtRoute({ children}) {
+function MainProtRoute({ children }) {
     const isLoggedIn = !!localStorage.getItem('token')
-    return  isLoggedIn ? children : <Navigate to={'/login'}/>
+    return isLoggedIn ? children : <Navigate to={'/login'} />
 }
 
 export default MainProtRoute
