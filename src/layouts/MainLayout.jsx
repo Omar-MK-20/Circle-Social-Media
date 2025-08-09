@@ -24,14 +24,14 @@ function MainLayout() {
             ></div>
 
             {/* Subtle floating dots */}
-            <div
+            {/* <div
                 className="absolute top-1/4 left-1/3 w-2 h-2 bg-blue-400 dark:bg-blue-300 rounded-full opacity-40 animate-pulse"
                 style={{ animationDelay: '1s', animationDuration: '3s' }}
-            ></div>
-            <div
+            ></div> */}
+            {/* <div
                 className="absolute top-3/4 right-1/3 w-3 h-3 bg-purple-400 dark:bg-purple-300 rounded-full opacity-30 animate-pulse"
                 style={{ animationDelay: '2.5s', animationDuration: '4s' }}
-            ></div>
+            ></div> */}
 
 
 
