@@ -43,14 +43,12 @@ function MainLayout() {
 
                 {/* Page title */}
                 <h1 className="text-2xl font-bold text-center text-white mb-6 mt-2 drop-shadow-lg">
-                    
+
                 </h1>
 
                 {/* Glass effect content wrapper */}
                 <div className="w-full flex justify-center mt-20">
-                    <div className="w-full max-w-2xl backdrop-blur-md rounded-xl p-4 sm:p-6">
-                        <Outlet />
-                    </div>
+                    <Outlet />
                 </div>
             </div>
         </div>
