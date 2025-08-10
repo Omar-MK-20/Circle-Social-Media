@@ -1,4 +1,4 @@
-import { addToast, Avatar, Card, CardBody, CardFooter, CardHeader, Divider, Image, Skeleton } from "@heroui/react";
+import { addToast, Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Image, Skeleton } from "@heroui/react";
 import { useContext, useEffect, useState } from "react";
 import { postApi } from "../services/postService";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ function FeedPage() {
 
 
     async function getAllPosts() {
-        setIsLoadingPost(true);
+        // setIsLoadingPost(true);
         const data = await postApi.getAll();
         console.log("🚀 ~ getPosts ~ data:", data);
 
@@ -59,63 +59,77 @@ function FeedPage() {
 
     }, [])
 
+
+
     return (
-        <div className="w-full max-w-2xl backdrop-blur-md rounded-xl p-4 sm:p-6 space-y-7 relative">
+        <>
+                <div className="w-full max-w-2xl backdrop-blur-md rounded-xl p-4 sm:p-6 space-y-7 relative">
+                {
+                    isLoadingPost ? <LoadingPostComponent /> :
+                        posts.map((post) => (
+                                <Card key={post._id} isBlurred isPressable className="w-full">
+                                    <CardHeader>
+                                        <div className="flex gap-5 cursor-pointer">
+                                            <Avatar
+                                                isBordered
+                                                radius="full"
+                                                size="md"
+                                                src={post.user.photo}
+                                            />
+                                            <div className="flex flex-col gap-1 items-start justify-center">
+                                                <h4 className="text-medium font-semibold leading-none text-default-600">{post.user.name}</h4>
+                                                <h5 className="text-small tracking-tight text-default-400">{post.createdAt}</h5>
+                                            </div>
+                                        </div>
+                                    </CardHeader>
+                                    <Divider className="my-2" />
+                                    <CardBody className="px-3 py-0 text-medium text-default-700 overflow-visible">
+                                        <p>{post.body}</p>
+                                    </CardBody>
+                                    {post.image && <CardBody className="overflow-visible py-2">
+                                        <img
+                                            className="rounded-xl mx-auto w-full h-70 sm:h-100 object-cover "
+                                            src={post.image}
+                                            alt="Card background" />
+                                    </CardBody>}
+                                    <Divider className="my-2" />
+                                    <CardFooter className="flex gap-3 justify-between px-6 py-0">
+                                        <div className="flex gap-1">
+                                            <p className="font-semibold text-default-400 text-small">4</p>
+                                            <p className=" text-default-400 text-small">Likes</p>
+                                        </div>
+                                        {/* <Button color="primary" size="sm">Comment</Button> */}
+                                        <div className="flex gap-1">
+                                            <p className="font-semibold text-default-400 text-small">{post.comments.length}</p>
+                                            <p className="text-default-400 text-small">Comments</p>
+                                        </div>
+                                    </CardFooter>
+                                    <Divider className="my-2" />
+                                    <CardFooter className="px-8">
+                                        <div className="flex gap-5 cursor-pointer">
+                                            <Avatar
+                                                isBordered
+                                                radius="full"
+                                                size="sm"
+                                                src={post.user.photo}
+                                            />
+                                            <div className="flex flex-col gap-1 items-start justify-center">
+                                                <h4 className="text-small font-semibold leading-none text-default-600">{post.user.name}</h4>
+                                                <h5 className="text-small tracking-tight text-default-400">{post.createdAt}</h5>
+                                            </div>
+                                        </div>
+                                    </CardFooter>
+                                </Card>
+                        ))
+                }
 
 
 
-            {
-                isLoadingPost ? <LoadingPostComponent/> :
-                posts.map((post) => (
-
-                    <>
-                        <Card key={post.id} isBlurred isPressable className="w-full">
-                            <CardHeader>
-                                <div className="flex gap-5 cursor-pointer">
-                                    <Avatar
-                                        isBordered
-                                        radius="full"
-                                        size="md"
-                                        src={post.user.photo}
-                                    />
-                                    <div className="flex flex-col gap-1 items-start justify-center">
-                                        <h4 className="text-small font-semibold leading-none text-default-600">{post.user.name}</h4>
-                                        <h5 className="text-small tracking-tight text-default-400">{post.createdAt}</h5>
-                                    </div>
-                                </div>
-                            </CardHeader>
-                            <Divider className="my-2" />
-                            <CardBody className="px-3 py-0 text-small text-default-700 overflow-visible">
-                                <p>{post.body}</p>
-                            </CardBody>
-                            {post.image && <CardBody className="overflow-visible py-2">
-                                <img
-                                    className="rounded-xl mx-auto w-full h-70 sm:h-100 object-cover "
-                                    src={post.image}
-                                    alt="Card background" />
-                            </CardBody>}
-                            <Divider className="my-2" />
-                            <CardFooter className="flex gap-3 justify-between">
-                                <div className="flex gap-1">
-                                    <p className="font-semibold text-default-400 text-small">4</p>
-                                    <p className=" text-default-400 text-small">Likes</p>
-                                </div>
-                                <div className="flex gap-1">
-                                    <p className="font-semibold text-default-400 text-small">{post.comments.length}</p>
-                                    <p className="text-default-400 text-small">Comments</p>
-                                </div>
-                            </CardFooter>
-                        </Card></>
-                ))
-            }
 
 
+            </div>
 
-
-
-
-        </div>
-
+        </>
     )
 }
 
