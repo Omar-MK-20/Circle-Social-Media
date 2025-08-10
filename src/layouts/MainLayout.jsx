@@ -4,7 +4,7 @@ import MainProtRoute from "../protectetdRoutes/MainProtRoute";
 
 function MainLayout() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 dark:from-purple-950 dark:via-blue-950 dark:to-indigo-950 flex flex-col items-center justify-start p-3 sm:p-4 overflow-hidden relative">
+        <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 dark:from-purple-950 dark:via-blue-950 dark:to-indigo-950 flex flex-col items-center justify-start p-3 sm:p-4 overflow-hidden relative bg-fixed">
             {/* Subtle background shapes (with dark mode colors) */}
             <div className="absolute inset-0 overflow-hidden -z-10">
                 <div className="absolute top-8 left-8 w-40 h-40 sm:w-56 sm:h-56 bg-indigo-400 dark:bg-indigo-500 rounded-full filter blur-2xl opacity-15 animate-pulse" />
