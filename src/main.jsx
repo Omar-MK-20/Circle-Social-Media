@@ -4,12 +4,20 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
+import AuthContextProvider, { AuthContext } from './contexts/AuthContextProvider.jsx'
+
+
+
+
+
 
 createRoot(document.getElementById('root')).render(
   // <StrictMode>
+  <AuthContextProvider>
     <HeroUIProvider>
-      <ToastProvider placement='top-center'/>
+      <ToastProvider placement='top-center' />
       <App />
     </HeroUIProvider>
+  </AuthContextProvider>
   // </StrictMode>
 )
