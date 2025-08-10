@@ -13,10 +13,15 @@ import {
 } from "@heroui/react";
 import { Link, useNavigate } from 'react-router-dom';
 import avatar from '../assets/avatar.png';
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContextProvider";
 
 
 function NvabarComponent() {
-    const isLoggedIn = !!localStorage.getItem('token');
+    // const isLoggedIn = !!localStorage.getItem('token');
+
+    const { isLoggedIn , setIsLoggedIn } = useContext(AuthContext);
+
 
 
 
@@ -50,6 +55,7 @@ function NvabarComponent() {
 
     function handleLogout() {
         localStorage.removeItem('token');
+        setIsLoggedIn(false);
         navigate('/login', { viewTransition: true })
         addToast(
             {
@@ -74,7 +80,7 @@ function NvabarComponent() {
             </NavbarBrand>
 
             <NavbarBrand className='justify-center'>
-                <Link to={'/'} className="font-bold text-inherit">CIRLCE</Link>
+                <Link to={'/'} viewTransition className="font-bold text-inherit">CIRLCE</Link>
             </NavbarBrand>
 
             <NavbarContent as="div" justify="end">
