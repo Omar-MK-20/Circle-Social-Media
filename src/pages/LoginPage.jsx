@@ -1,14 +1,16 @@
 import { addToast, Button, Input } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import loginSchema from "../schema/loginSchema";
 import { authApi } from "../services/authService";
+import { AuthContext } from "../contexts/AuthContextProvider";
 
 function LoginPage() {
 
     const [isLoading, setIsLoading] = useState(false);
+    const { setIsLoggedIn } = useContext(AuthContext);
     const navigate = useNavigate()
 
 
@@ -50,6 +52,7 @@ function LoginPage() {
                     color: 'success'
                 }
             )
+            setIsLoggedIn(true);
             navigate('/', {viewTransition: true});
         }
 
