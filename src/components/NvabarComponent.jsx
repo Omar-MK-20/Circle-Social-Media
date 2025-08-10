@@ -11,18 +11,42 @@ import {
     NavbarItem,
     addToast,
 } from "@heroui/react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import avatar from '../assets/avatar.png';
-import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContextProvider";
+import { userApi } from "../services/userService";
 
 
 function NvabarComponent() {
     // const isLoggedIn = !!localStorage.getItem('token');
 
-    const { isLoggedIn , setIsLoggedIn } = useContext(AuthContext);
+    const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+    const [ user, setUser ] = useState(null);
 
 
+    async function handleUserData() {
+        const data = await userApi.getUserProfile();
+        if (data.error) {
+            setUser({
+                name: "",
+                email: "Retry again",
+                photo: "https://linked-posts.routemisr.com/uploads/default-profile.png",
+            })
+            return
+        }
+        setUser(data.user);
+    }
+
+
+    useEffect( () => 
+    {
+        if (isLoggedIn)
+        {
+            console.log("🚀 ~ NvabarComponent ~ isLoggedIn:", isLoggedIn);
+            handleUserData()
+        }
+
+    }, [isLoggedIn])
 
 
     const navigate = useNavigate()
@@ -80,11 +104,12 @@ function NvabarComponent() {
             </NavbarBrand>
 
             <NavbarBrand className='justify-center'>
-                <Link to={'/'} viewTransition className="font-bold text-inherit">CIRLCE</Link>
+                <Link to={'/'} viewTransition className="font-bold text-xl">CIRLCE</Link>
             </NavbarBrand>
 
             <NavbarContent as="div" justify="end">
                 {isLoggedIn ?
+                    user && 
                     <Dropdown placement="bottom-end">
                         <DropdownTrigger className='cursor-pointer'>
                             <Avatar
@@ -94,13 +119,13 @@ function NvabarComponent() {
                                 color="secondary"
                                 name="Jason Hughes"
                                 size="sm"
-                                src={avatar}
+                                src={user.photo}
                             />
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Profile Actions" variant="flat">
                             <DropdownItem key="profile" className="h-14 gap-2">
-                                <p className="font-semibold">Signed in as</p>
-                                <p className="font-semibold">zoey@example.com</p>
+                                <p className="font-semibold">{user.name}</p>
+                                <p className="font-semibold">{user.email}</p>
                             </DropdownItem>
                             <DropdownItem key="settings">My Settings</DropdownItem>
                             <DropdownItem key="team_settings">Team Settings</DropdownItem>
@@ -116,12 +141,12 @@ function NvabarComponent() {
                     :
                     <>
                         <NavbarItem>
-                            <Button onPress={() => { navigate('/login', { viewTransition: true }) }} color='primary' variant="flat">
+                            <Button onPress={() => { navigate('/login', { viewTransition: true }) }} color='primary' variant="flat" size="sm">
                                 Login
                             </Button>
                         </NavbarItem>
                         <NavbarItem>
-                            <Button onPress={() => { navigate('/register', { viewTransition: true }) }} color="warning" variant="flat">
+                            <Button onPress={() => { navigate('/register', { viewTransition: true }) }} color="warning" variant="flat" size="sm">
                                 Sign Up
                             </Button>
                         </NavbarItem>
