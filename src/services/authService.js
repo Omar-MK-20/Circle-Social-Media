@@ -23,7 +23,7 @@ export const authApi =
         try
         {
             const { data } = await axios.post(baseUrl+ 'signin', formData);
-            localStorage.setItem('token', data.token)
+            localStorage.setItem('token', data.token);
             return data;
         }
         catch(error)
