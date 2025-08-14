@@ -11,46 +11,19 @@ import {
     NavbarItem,
     addToast,
 } from "@heroui/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from "../contexts/AuthContextProvider";
-import { userApi } from "../services/userService";
 
 
 function NvabarComponent() {
-    // const isLoggedIn = !!localStorage.getItem('token');
-
-    const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
-    const [ user, setUser ] = useState(null);
 
 
-    async function handleUserData() {
-        const data = await userApi.getUserProfile();
-        if (data.error) {
-            setUser({
-                name: "",
-                email: "Retry again",
-                photo: "https://linked-posts.routemisr.com/uploads/default-profile.png",
-            })
-            return
-        }
-        setUser(data.user);
-    }
-
-
-    useEffect( () => 
-    {
-        if (isLoggedIn)
-        {
-            console.log("🚀 ~ NvabarComponent ~ isLoggedIn:", isLoggedIn);
-            handleUserData()
-        }
-
-    }, [isLoggedIn])
-
-
+    const { isLoggedIn, setIsLoggedIn, userData } = useContext(AuthContext);
     const navigate = useNavigate()
 
+
+    
     function handelDarkMode() {
         if ('theme' in localStorage) {
             if (localStorage.theme === 'dark') {
@@ -109,7 +82,7 @@ function NvabarComponent() {
 
             <NavbarContent as="div" justify="end">
                 {isLoggedIn ?
-                    user && 
+                    userData &&
                     <Dropdown placement="bottom-end">
                         <DropdownTrigger className='cursor-pointer'>
                             <Avatar
@@ -119,15 +92,15 @@ function NvabarComponent() {
                                 color="secondary"
                                 name="Jason Hughes"
                                 size="sm"
-                                src={user.photo}
+                                src={userData.photo}
                             />
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Profile Actions" variant="flat">
                             <DropdownItem key="profile" className="h-14 gap-2">
-                                <p className="font-semibold">{user.name}</p>
-                                <p className="font-semibold">{user.email}</p>
+                                <p className="font-semibold">{userData.name}</p>
+                                <p className="font-semibold">{userData.email}</p>
                             </DropdownItem>
-                            <DropdownItem key="settings">My Settings</DropdownItem>
+                            <DropdownItem onPress={() => {navigate('', {viewTransition:true})}} key="settings">Feed Page</DropdownItem>
                             <DropdownItem key="team_settings">Team Settings</DropdownItem>
                             <DropdownItem key="analytics">Analytics</DropdownItem>
                             <DropdownItem key="system">System</DropdownItem>
