@@ -14,14 +14,14 @@ A modern React app built with Vite that provides authentication and a polished U
 ### Project Structure
 - `src/layouts/AuthLayout.jsx`: Animated gradient layout for auth screens
 - `src/layouts/MainLayout.jsx`: Subtle animated layout with navbar and glass container
-- `src/components/NvabarComponent.jsx`: Top navigation with dark mode toggle and user menu
+- `src/components/NavbarComponent.jsx`: Top navigation with dark mode toggle and user menu
 - `src/components/LoadingPostComponent.jsx`: Skeleton loading component for posts
 - `src/pages/`: `LoginPage.jsx`, `RegisterPage.jsx`, `FeedPage.jsx`, `ProfilePage.jsx`, `PostDetailsPage.jsx`, `NotFoundPage.jsx`
 - `src/services/authService.js`: Auth API calls (signup/signin)
 - `src/services/postService.js`: Posts API calls (fetching posts)
 - `src/schema/`: `loginSchema.js`, `registerSchema.js` (Zod validation)
 - `src/contexts/AuthContextProvider.jsx`: Global authentication state management
-- `src/protectetdRoutes/`: Route protection components
+- `src/protectedRoutes/`: Route protection components
 - `src/main.jsx`: App root with providers and routing setup
 
 ### Current Features
