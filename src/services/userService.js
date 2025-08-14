@@ -17,7 +17,6 @@ export const userApi =
                 }}
             )
 
-            console.log("🚀 ~ data:", data)
             return data
         } 
         catch (error) 
