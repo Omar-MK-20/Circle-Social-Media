@@ -8,8 +8,8 @@ import ProfilePage from './pages/ProfilePage'
 import RegisterPage from './pages/RegisterPage'
 import NotFoundPage from './pages/NotFoundPage'
 import './App.css'
-import MainProtRoute from './protectetdRoutes/MainProtRoute'
-import AuthProtRoute from './protectetdRoutes/AuthProtRoute'
+import MainProtRoute from './protectedRoutes/MainProtRoute'
+import AuthProtRoute from './protectedRoutes/AuthProtRoute'
 
 
 const router = createBrowserRouter([
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
         path: '', element: <MainLayout />, children: [
             { index: true, element: <MainProtRoute><FeedPage /></MainProtRoute> },
             { path: 'profile', element: <MainProtRoute><ProfilePage /></MainProtRoute> },
-            { path: 'post-details', element: <MainProtRoute><PostDetailsPage /></MainProtRoute> },
+            { path: 'post-details/:id', element: <MainProtRoute><PostDetailsPage /></MainProtRoute> },
             { path: '*', element: <NotFoundPage /> }
         ]
     }
