@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom"
-import NvabarComponent from "../components/NvabarComponent"
+import NavbarComponent from "../components/NavbarComponent"
 
 function AuthLayout() {
     return (<>
 
-        <NvabarComponent />
+        <NavbarComponent />
         <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 dark:from-purple-950 dark:via-blue-950 dark:to-indigo-950 flex items-center justify-center p-3 sm:p-4 overflow-hidden relative ">
             {/* Animated background circles */}
             <div className="absolute inset-0 overflow-hidden">
