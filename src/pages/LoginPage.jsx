@@ -19,7 +19,7 @@ function LoginPage() {
         {
             defaultValues:
             {
-                "email": "omar@email.com",
+                "email": "omar.mohamed@email.com",
                 "password": "Omar@1234",
             },
             resolver: zodResolver(loginSchema)
@@ -37,7 +37,7 @@ function LoginPage() {
         {   
             addToast(
                 {
-                    title: "Faild Login",
+                    title: "Failed Login",
                     description: data.error,
                     color: 'danger',
                 }
