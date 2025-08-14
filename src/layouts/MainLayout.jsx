@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
-import NvabarComponent from "../components/NvabarComponent";
-import MainProtRoute from "../protectetdRoutes/MainProtRoute";
+import NavbarComponent from "../components/NavbarComponent";
 
 function MainLayout() {
     return (
@@ -39,7 +38,7 @@ function MainLayout() {
             {/* Main container */}
             <div className="w-full max-w-6xl">
                 {/* Navbar */}
-                <NvabarComponent />
+                <NavbarComponent />
 
                 {/* Page title */}
                 <h1 className="text-2xl font-bold text-center text-white mb-6 mt-2 drop-shadow-lg">
