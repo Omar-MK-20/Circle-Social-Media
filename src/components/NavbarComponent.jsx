@@ -16,7 +16,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from "../contexts/AuthContextProvider";
 
 
-function NvabarComponent() {
+function NavbarComponent() {
 
 
     const { isLoggedIn, setIsLoggedIn, userData } = useContext(AuthContext);
@@ -77,13 +77,13 @@ function NvabarComponent() {
             </NavbarBrand>
 
             <NavbarBrand className='justify-center'>
-                <Link to={'/'} viewTransition className="font-bold text-xl">CIRLCE</Link>
+                <Link to={'/'} viewTransition className="font-bold text-xl">CIRCLE</Link>
             </NavbarBrand>
 
             <NavbarContent as="div" justify="end">
                 {isLoggedIn ?
                     userData &&
-                    <Dropdown placement="bottom-end">
+                    <Dropdown placement="bottom-end" backdrop='blur'>
                         <DropdownTrigger className='cursor-pointer'>
                             <Avatar
                                 isBordered
@@ -95,17 +95,17 @@ function NvabarComponent() {
                                 src={userData.photo}
                             />
                         </DropdownTrigger>
-                        <DropdownMenu aria-label="Profile Actions" variant="flat">
-                            <DropdownItem key="profile" className="h-14 gap-2">
+                        <DropdownMenu aria-label="Profile Actions" variant="shadow">
+                            <DropdownItem onPress={() => {navigate(`/profile/${userData._id}`, {viewTransition:true})}} key="profile" className="h-14 gap-2">
                                 <p className="font-semibold">{userData.name}</p>
                                 <p className="font-semibold">{userData.email}</p>
                             </DropdownItem>
+                            <DropdownItem key="team_settings">Profile</DropdownItem>
                             <DropdownItem onPress={() => {navigate('', {viewTransition:true})}} key="settings">Feed Page</DropdownItem>
-                            <DropdownItem key="team_settings">Team Settings</DropdownItem>
-                            <DropdownItem key="analytics">Analytics</DropdownItem>
-                            <DropdownItem key="system">System</DropdownItem>
-                            <DropdownItem key="configurations">Configurations</DropdownItem>
-                            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+                            {/* <DropdownItem key="analytics">Analytics</DropdownItem> */}
+                            {/* <DropdownItem key="system">System</DropdownItem> */}
+                            {/* <DropdownItem key="configurations">Configurations</DropdownItem> */}
+                            {/* <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem> */}
                             <DropdownItem key="logout" color="danger" onPress={handleLogout}>
                                 Log Out
                             </DropdownItem>
@@ -131,4 +131,4 @@ function NvabarComponent() {
 }
 
 
-export default NvabarComponent
+export default NavbarComponent
