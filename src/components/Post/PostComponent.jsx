@@ -1,14 +1,19 @@
-import { Avatar, Card, CardBody, CardFooter, CardHeader, Divider, Image } from '@heroui/react';
+import { addToast, Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Image } from '@heroui/react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useNavigate } from 'react-router-dom';
 import CommentComponent from '../CommentComponent';
 import AddCommentComponent from './AddCommentComponent';
+import { useContext, useEffect } from 'react';
+import { AuthContext } from '../../contexts/AuthContextProvider';
+import { useMutation } from '@tanstack/react-query';
+import { postApi } from '../../services/postService';
 
 
 function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData }) {
     dayjs.extend(relativeTime);
     const navigate = useNavigate()
+    const { userData } = useContext(AuthContext)
 
 
     function handleViewImage(e, imgSrc) {
@@ -26,12 +31,65 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData }) 
 
     }
 
+    const { mutate, isPending, isError, error, isSuccess } = useMutation(
+        {
+            mutationFn: () => postApi.deleteOne(post._id),
+        }
+    )
+
+    function handleDeletePost() {
+        mutate();
+    }
+
+    async function errorHandling() {
+        if (isError) {
+            addToast(
+                {
+                    title: "Delete post failed",
+                    description: error.message,
+                    color: 'danger',
+                }
+            )
+        }
+
+        if (isSuccess) {
+            await getData()
+            addToast(
+                {
+                    title: 'Post Deleted Successfully',
+                    color: 'success'
+                }
+            )
+        }
+    }
+
+    useEffect(() => {
+        errorHandling();
+    }, [isError, isSuccess])
+
+
 
     return (
         <>
 
             <Card onPress={() => handlePostDetails(post._id)} key={post._id} as={'div'} isPressable isBlurred className="w-full mb-0 cursor-auto">
-                <CardHeader>
+                <CardHeader className='relative'>
+
+                    {userData._id == post.user._id &&
+                        <Dropdown>
+                            <DropdownTrigger>
+                                <Button color='light' className='absolute top-0 end-0 m-4 p-2'>
+                                    <i className="fa-solid fa-ellipsis text-2xl"></i>
+                                </Button>
+                            </DropdownTrigger>
+                            <DropdownMenu aria-label="Static Actions" variant="shadow">
+                                <DropdownItem key="edit">Edit</DropdownItem>
+                                <DropdownItem onPress={handleDeletePost} isPending={isPending} key="delete" className="text-danger" color="danger">
+                                    Delete
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>}
+
                     <div onClick={(e) => e.stopPropagation()} className="flex gap-5 cursor-pointer">
                         <Avatar
                             isBordered
@@ -41,7 +99,7 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData }) 
                         />
                         <div className="flex flex-col gap-1 items-start justify-center">
                             <h4 className="text-medium font-semibold leading-none text-default-600">{post.user.name}</h4>
-                            <h5 className="text-small tracking-tight text-default-400">{dayjs(post.createdAt).format('DD/MM/YYYY')}</h5>
+                            <h5 className="text-small tracking-tight text-default-400">{dayjs(post.createdAt).format('DD/MM/YYYY hh:mm A')}</h5>
                         </div>
                     </div>
                 </CardHeader>
@@ -55,7 +113,7 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData }) 
                             <img onClick={(e) => { handleViewImage(e, post.image) }}
                                 className="rounded-xl mx-auto w-full h-70 sm:h-100 object-cover cursor-pointer"
                                 src={post.image}
-                                alt="Card background" 
+                                alt="Card background"
                             />
                         </CardBody>}
                     <Divider className="my-2" />
@@ -70,7 +128,7 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData }) 
                         <p className="text-default-400 text-small">Comments</p>
                     </div>
                 </CardFooter>
-                <AddCommentComponent getData={getData} postId={post._id}/>
+                <AddCommentComponent getData={getData} postId={post._id} />
             </Card>
             <Card isBlurred className='mt-1'>
                 {post.comments &&
