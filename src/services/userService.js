@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = 'https://linked-posts.routemisr.com/users';
+const baseUrl = 'https://linked-posts.routemisr.com/users/';
 
 
 
@@ -10,7 +10,7 @@ export const userApi =
     {
         try 
         {
-            const { data } = await axios.get(baseUrl + '/profile-data', {
+            const { data } = await axios.get(baseUrl + 'profile-data', {
                 headers:
                 {
                     token: localStorage.getItem('token')
@@ -23,5 +23,18 @@ export const userApi =
         {
             return !error.response ? {error: "Network Error"} : error.response.data;
         }
+    },
+
+    getUserPosts: (userId) =>
+    {
+        const response = axios.get(baseUrl+userId+'/posts',
+            {
+                headers:
+                {
+                    token: localStorage.getItem('token')
+                }
+            }
+        )
+        return response
     }
 }
