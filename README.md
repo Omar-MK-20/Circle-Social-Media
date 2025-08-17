@@ -1,62 +1,66 @@
-## Circle
 
-A modern React app built with Vite that provides authentication and a polished UI with gradient layouts, subtle animations, and a clean component structure. The project uses HeroUI for components, TailwindCSS for styling, Zod + React Hook Form for validation, and React Router for routing.
+# Circle Social Media
 
-### Tech Stack
+Circle is a modern, full-stack social media web application built with React 19, Vite, and a beautiful, responsive UI. It features animated backgrounds, glassmorphism effects, authentication, protected routes, and a modular component structure. The project demonstrates best practices in React development and UI/UX design.
+
+## Tech Stack
 - **React 19** + **Vite 7**
-- **React Router** (v7)
-- **HeroUI** (components, theming, toasts)
-- **Tailwind CSS** (via `@tailwindcss/vite`)
-- **React Hook Form** + **Zod** (form handling & schema validation)
+- **React Router v7**
+- **@tanstack/react-query** (with Devtools)
+- **HeroUI** (UI components, toasts)
+- **Tailwind CSS** (with dark mode)
+- **React Hook Form** + **Zod** (form handling & validation)
 - **Axios** (HTTP client)
 - **Font Awesome** (icons)
+- **Framer Motion** (animations)
 
-### Project Structure
-- `src/layouts/AuthLayout.jsx`: Animated gradient layout for auth screens
-- `src/layouts/MainLayout.jsx`: Subtle animated layout with navbar and glass container
-- `src/components/NavbarComponent.jsx`: Top navigation with dark mode toggle and user menu
-- `src/components/LoadingPostComponent.jsx`: Skeleton loading component for posts
-- `src/pages/`: `LoginPage.jsx`, `RegisterPage.jsx`, `FeedPage.jsx`, `ProfilePage.jsx`, `PostDetailsPage.jsx`, `NotFoundPage.jsx`
-- `src/services/authService.js`: Auth API calls (signup/signin)
-- `src/services/postService.js`: Posts API calls (fetching posts)
-- `src/schema/`: `loginSchema.js`, `registerSchema.js` (Zod validation)
-- `src/contexts/AuthContextProvider.jsx`: Global authentication state management
-- `src/protectedRoutes/`: Route protection components
-- `src/main.jsx`: App root with providers and routing setup
+## Project Structure
+```
+src/
+  assets/                # Images and SVGs
+  components/            # Reusable React components (Navbar, Post, Comment, etc.)
+  contexts/              # AuthContextProvider for global auth state
+  layouts/               # AuthLayout (animated), MainLayout (glassmorphism)
+  pages/                 # FeedPage, LoginPage, RegisterPage, ProfilePage, etc.
+  protectedRoutes/       # AuthProtRoute, MainProtRoute (route guards)
+  schema/                # Zod validation schemas
+  services/              # API service modules (auth, post, comment, user)
+  App.jsx                # Main app component with routing
+  main.jsx               # Entry point, providers setup
+```
 
-### Current Features
-- **Authentication System**: 
-  - Login and Register pages with validation and animated, accessible inputs
-  - JWT token-based authentication with localStorage persistence
-  - Protected routes for authenticated and unauthenticated users
-  - Automatic token validation and logout on expired tokens
+## Current Features
+- **Authentication System**
+  - Login and Register pages with animated, accessible forms
+  - JWT token-based authentication (localStorage persistence)
+  - Protected routes for authenticated/unauthenticated users
+  - Automatic logout on expired tokens
 
-- **Form Validation**: 
-  - Zod schemas enforce email, strong password, matching passwords, age (>= 18), and gender
-  - React Hook Form integration for efficient form handling
+- **Form Validation**
+  - Zod schemas for email, strong password, matching passwords, age (>= 18), gender
+  - React Hook Form for efficient form handling
 
-- **Posts Module**:
-  - Feed page displaying posts with user information, content, and images
-  - Post cards with like counts and comment counts
-  - Loading states with skeleton components
-  - Error handling for API failures and token expiration
+- **Posts Module**
+  - Feed page displaying posts with user info, content, and images
+  - Post cards with like/comment counts
+  - Add post and add comment components
+  - Loading skeletons and error handling
 
-- **UI/UX Features**:
-  - Dark/Light mode toggle in the navbar (persists via localStorage)
-  - Responsive design with glass morphism effects
-  - Smooth animations and transitions
-  - Toast notifications for user feedback
+- **UI/UX Features**
+  - Dark/Light mode toggle (persists via localStorage)
+  - Responsive design with glassmorphism and animated backgrounds
+  - Smooth transitions and toasts for feedback
 
-- **Layouts**:
+- **Layouts**
   - `AuthLayout`: vibrant animated background for auth pages
-  - `MainLayout`: subtle background with glass effect content area and fixed navbar
+  - `MainLayout`: subtle animated background, glass effect content area, fixed navbar
 
-- **Routing**: 
-  - Protected routes with React Router
-  - Automatic redirects based on authentication status
-  - Not found fallback included
+- **Routing**
+  - Protected routes with React Router v7
+  - Automatic redirects based on authentication
+  - Not found fallback page
 
-### Getting Started
+## Getting Started
 1. Install Node.js (LTS recommended).
 2. Install dependencies:
    ```bash
@@ -75,60 +79,31 @@ A modern React app built with Vite that provides authentication and a polished U
    npm run preview
    ```
 
-### Environment & Configuration
-- The auth base URL is currently hardcoded in `src/services/authService.js`
-- Posts API base URL is configured in `src/services/postService.js`
-- Token is stored in `localStorage` on successful login
-- Vercel rewrite config is provided in `vercel.json` for SPA routing
+## Environment & Configuration
+- Auth and posts API base URLs are set in `src/services/`
+- Token is stored in `localStorage` on login
+- Dark mode is toggled and persisted via `localStorage.theme`
 
-### API Integration
-- **Authentication**: `https://linked-posts.routemisr.com/users/` for signup/signin
-- **Posts**: `https://linked-posts.routemisr.com/posts` for fetching posts
+## API Integration
+- **Authentication**: `https://linked-posts.routemisr.com/users/` (signup/signin)
+- **Posts**: `https://linked-posts.routemisr.com/posts` (fetch, add, comment)
 - Automatic token inclusion in API headers
-- Error handling for network issues and authentication failures
+- Error handling for network/auth failures
 
-### Roadmap / To Do
-- **Posts Module Enhancements**:
-  - Create new posts functionality
-  - Comment system implementation
-  - Post editing and deletion
-  - Image upload for posts
-  - Pagination or infinite scroll for better performance
+## Roadmap / To Do
+- edit/delete posts
+- Comment system enhancements
+- Profile page editing and avatar upload
+- Pagination/infinite scroll for feeds
+- Accessibility improvements (ARIA, keyboard nav)
+- Unit/component/integration tests
+- CI/CD pipeline and deployment configs
 
-- **User Module**:
-  - Profile page with editable user info and avatar upload
-  - Settings page with preferences
-  - Enhanced session management with refresh tokens
-
-- **UI/UX Enhancements**:
-  - Responsive improvements for mobile devices
-  - Accessibility improvements (ARIA labels, focus states, keyboard navigation)
-  - Enhanced empty states and error boundaries
-  - Performance optimizations (virtual scrolling for large feeds)
-
-- **Error Handling & State Management**:
-  - Centralized API error interceptor
-  - Standardized error messages and user feedback
-  - Global state management for posts cache and user data
-  - Offline support and data persistence
-
-- **Testing & Quality**:
-  - Unit tests for services and validation schemas
-  - Component tests for forms and protected routing
-  - Integration tests for API interactions
-  - E2E tests for critical user flows
-
-- **Deployment & DevOps**:
-  - CI/CD pipeline (GitHub Actions) with lint/build/test
-  - Environment variable management for different deployment stages
-  - Performance monitoring and analytics
-  - SEO optimization
-
-### Scripts
+## Scripts
 - `npm run dev`: Start development server
 - `npm run build`: Build production bundle
 - `npm run preview`: Preview production build
 - `npm run lint`: Run ESLint for code quality
 
-### License
+## License
 This project is for learning and demonstration purposes. Add a license if you plan to distribute.
