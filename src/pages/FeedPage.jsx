@@ -198,7 +198,7 @@ function FeedPage() {
                                 <div key={index} className="space-y-7">
                                     {
                                         page.data.posts.map((post) => (
-                                            <PostComponent getData={post} key={post._id} post={post} onOpen={onOpen} setViewImgSrc={setViewImgSrc} numOfComments={1} />
+                                            <PostComponent getData={refetch} key={post._id} post={post} onOpen={onOpen} setViewImgSrc={setViewImgSrc} numOfComments={1} />
                                         ))
                                     }
                                 </div>
