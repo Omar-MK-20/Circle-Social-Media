@@ -29,10 +29,8 @@ function AddCommentComponent({postId, getData}) {
             content: commentContent,
             post: postId
         }
-        console.log(commentData);
         setIsCommentSubmitting(true);
         const response = await commentApi.create(commentData);
-        console.log("🚀 ~ handleCreateComment ~ response:", response);
         if(response.error)
         {
             addToast(
