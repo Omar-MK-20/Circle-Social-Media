@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { commentApi } from '../../services/commentService';
 import { useQueryClient } from '@tanstack/react-query';
 
-function AddCommentComponent({postId, getData}) {
+function AddCommentComponent({postId}) {
 
     const [commentContent, setCommentContent] = useState('');
     const [isDisabled, setIsDisabled] = useState(true);
