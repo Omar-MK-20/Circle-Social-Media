@@ -19,6 +19,17 @@ export const postApi =
         return response;
 
     },
+    
+    updateOne: (postId, formData) => 
+    {
+        const response = axios.put(baseUrl + postId, formData, {
+            headers:
+            {
+                token: localStorage.getItem('token')
+            }
+        })
+        return response
+    },
 
     deleteOne: (postId) => 
     {
