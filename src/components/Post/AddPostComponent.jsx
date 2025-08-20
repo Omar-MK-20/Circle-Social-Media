@@ -43,7 +43,6 @@ function AddPostComponent({ refetch, isFetching }) {
             const src = URL.createObjectURL(e.target.files[0])
             setImgSrc(src);
         }
-
     }
 
 
@@ -61,7 +60,7 @@ function AddPostComponent({ refetch, isFetching }) {
         if (postImage) {
             formData.append('image', postImage);
         }
-        console.log(formData);
+        // console.log(formData);
         setFormData(formData);
         mutate();
     }
