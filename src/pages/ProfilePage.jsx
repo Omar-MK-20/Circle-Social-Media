@@ -6,6 +6,7 @@ import LoadingPostComponent from "../components/LoadingPostComponent";
 import PostComponent from "../components/Post/PostComponent";
 import { Modal, ModalBody, ModalContent, useDisclosure } from "@heroui/react";
 import { useState } from "react";
+import UpdatePostComponent from "../components/Post/UpdatePostComponent";
 
 
 
@@ -15,6 +16,12 @@ function ProfilePage() {
     const { id } = useParams();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [viewImgSrc, setViewImgSrc] = useState(null);
+
+    // useDisclosure and state for update post
+    const updataPostDisclosure = useDisclosure();
+    const [ postDetailsForEdit, setPostDetailsForEdit ] = useState({})
+
+
 
     const { data: { posts = [] } = {}, isLoading, isError, error, refetch, isFetching } = useQuery(
         {
@@ -41,12 +48,14 @@ function ProfilePage() {
                         <div className="w-full text-center bg-red-300/50 text-red-600 py-4  rounded-md ">{error.message}</div>
                         :
                         posts.map((post) => (
-                            <PostComponent getData={refetch} key={post._id} post={post} onOpen={onOpen} setViewImgSrc={setViewImgSrc} numOfComments={1} />
+                            <PostComponent getData={refetch} key={post._id} post={post} onOpen={onOpen} setViewImgSrc={setViewImgSrc} numOfComments={1} setPostDetails={setPostDetailsForEdit} updataPostDisclosure={updataPostDisclosure} />
                         ))
             }
 
 
-            <Modal isOpen={isOpen} size="xl" placement="center" scrollBehavior="outside" onOpenChange={onOpenChange}>
+            <UpdatePostComponent postIsOpen={updataPostDisclosure.isOpen} postOnOpenChange={updataPostDisclosure.onOpenChange} postDetails={postDetailsForEdit} queryKey={'userPosts'} />
+
+            <Modal backdrop="blur" isOpen={isOpen} size="xl" placement="center" scrollBehavior="outside" onOpenChange={onOpenChange}>
                 <ModalContent>
                     {() => (
                         <>
