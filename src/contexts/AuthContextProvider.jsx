@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { userApi } from "../services/userService";
+import { addToast } from "@heroui/react";
 
 
 export const AuthContext = createContext();
@@ -13,12 +14,21 @@ export default function AuthContextProvider({children})
 
     async function handleUserData() {
             const data = await userApi.getUserProfile();
-            if (data.error) {
-                setUserData({
-                    name: "",
-                    email: "Retry again",
-                    photo: "https://linked-posts.routemisr.com/uploads/default-profile.png",
-                })
+            if (data.error) 
+                {
+                    setIsLoggedIn(false);
+                    localStorage.removeItem('token')
+                    addToast(
+                        {
+                            title: 'Error getting User Data',
+                            color: 'danger'
+                        }
+                    )
+                    // setUserData({
+                    //     name: "",
+                    //     email: "Retry again",
+                    //     photo: "https://linked-posts.routemisr.com/uploads/default-profile.png",
+                    // })
                 return
             }
             setUserData(data.user);
