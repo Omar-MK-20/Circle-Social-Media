@@ -1,6 +1,7 @@
 import { addToast, Button, CardFooter, Divider, Input } from '@heroui/react'
 import { useEffect, useState } from 'react';
 import { commentApi } from '../../services/commentService';
+import { useQueryClient } from '@tanstack/react-query';
 
 function AddCommentComponent({postId, getData}) {
 
@@ -8,6 +9,7 @@ function AddCommentComponent({postId, getData}) {
     const [isDisabled, setIsDisabled] = useState(true);
     const [isCommentSubmitting, setIsCommentSubmitting] = useState(false);
 
+    const queryClient = useQueryClient();
 
     useEffect( () => 
     {
@@ -41,7 +43,7 @@ function AddCommentComponent({postId, getData}) {
                 }
             )
         }
-        await getData();
+        await queryClient.invalidateQueries();
         setIsCommentSubmitting(false);
         setCommentContent('');
     }
