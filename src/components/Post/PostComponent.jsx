@@ -1,19 +1,33 @@
-import { addToast, Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Image } from '@heroui/react';
+import { addToast, Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@heroui/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContextProvider';
+import { postApi } from '../../services/postService';
 import CommentComponent from '../CommentComponent';
 import AddCommentComponent from './AddCommentComponent';
-import { useContext, useEffect } from 'react';
-import { AuthContext } from '../../contexts/AuthContextProvider';
-import { useMutation } from '@tanstack/react-query';
-import { postApi } from '../../services/postService';
 
 
-function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData }) {
+function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData, updataPostDisclosure ,setPostDetails }) {
+
     dayjs.extend(relativeTime);
-    const navigate = useNavigate()
-    const { userData } = useContext(AuthContext)
+    const navigate = useNavigate();
+    const { userData } = useContext(AuthContext);
+    const queryClient = useQueryClient()
+
+    function handelUpdatePost()
+    {
+        setPostDetails(
+            {
+                id: post._id,
+                body: post.body,
+                image: post.image
+            }
+        )
+        updataPostDisclosure.onOpen()
+    }
 
 
     function handleViewImage(e, imgSrc) {
@@ -24,16 +38,32 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData }) 
         }
     }
 
-    function handlePostDetails(id) {
+    function navigateToPostDetails(id) {
         if (!window.location.pathname.includes('post-details')) {
             navigate(`/post-details/${id}`, { viewTransition: true });
         }
 
     }
 
-    const { mutate, isPending, isError, error, isSuccess } = useMutation(
+    const { mutate, isPending, error } = useMutation(
         {
             mutationFn: () => postApi.deleteOne(post._id),
+            onError: () => {
+                addToast(
+                    {
+                        title: "Delete post failed",
+                        description: error.message,
+                        color: 'danger',
+                    })
+            },
+            onSuccess: async () => {
+                await queryClient.invalidateQueries();
+                addToast(
+                    {
+                        title: 'Post Deleted Successfully',
+                        color: 'success'
+                    })
+            }
         }
     )
 
@@ -41,41 +71,13 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData }) 
         mutate();
     }
 
-    async function errorHandling() {
-        if (isError) {
-            addToast(
-                {
-                    title: "Delete post failed",
-                    description: error.message,
-                    color: 'danger',
-                }
-            )
-        }
-
-        if (isSuccess) {
-            await getData()
-            addToast(
-                {
-                    title: 'Post Deleted Successfully',
-                    color: 'success'
-                }
-            )
-        }
-    }
-
-    useEffect(() => {
-        errorHandling();
-    }, [isError, isSuccess])
-
-
 
     return (
         <>
 
-            <Card onPress={() => handlePostDetails(post._id)} key={post._id} as={'div'} isPressable isBlurred className="w-full mb-0 cursor-auto">
+            <Card isDisabled={isPending} onPress={() => navigateToPostDetails(post._id)} key={post._id} as={'div'} isPressable isBlurred className="w-full mb-0 cursor-auto">
                 <CardHeader className='relative'>
-
-                    {userData._id == post.user._id &&
+                    {userData?._id == post.user._id &&
                         <Dropdown>
                             <DropdownTrigger>
                                 <Button color='light' className='absolute top-0 end-0 m-4 p-2'>
@@ -83,7 +85,7 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData }) 
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu aria-label="Static Actions" variant="shadow">
-                                <DropdownItem key="edit">Edit</DropdownItem>
+                                <DropdownItem onPress={handelUpdatePost} key="edit">Edit</DropdownItem>
                                 <DropdownItem onPress={handleDeletePost} isPending={isPending} key="delete" className="text-danger" color="danger">
                                     Delete
                                 </DropdownItem>
@@ -132,9 +134,11 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData }) 
             </Card>
             <Card isBlurred className='mt-1'>
                 {post.comments &&
-                    <CommentComponent comments={post.comments} numOfComments={numOfComments} />
+                    <CommentComponent postUser={post.user} comments={post.comments} numOfComments={numOfComments} />
                 }
             </Card>
+
+
 
         </>
     )
