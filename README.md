@@ -8,9 +8,10 @@ Circle is a modern, full-stack social media web application built with React 19,
 - **React Router v7**
 - **@tanstack/react-query** (with Devtools)
 - **HeroUI** (UI components, toasts)
-- **Tailwind CSS** (with dark mode)
+- **Tailwind CSS v4** (with dark mode)
 - **React Hook Form** + **Zod** (form handling & validation)
 - **Axios** (HTTP client)
+- **Day.js** (dates & relative time)
 - **Font Awesome** (icons)
 - **Framer Motion** (animations)
 
@@ -21,20 +22,20 @@ src/
   components/            # Reusable React components (Navbar, Post, Comment, etc.)
   contexts/              # AuthContextProvider for global auth state
   layouts/               # AuthLayout (animated), MainLayout (glassmorphism)
-  pages/                 # FeedPage, LoginPage, RegisterPage, ProfilePage, etc.
+  pages/                 # FeedPage, LoginPage, RegisterPage, ProfilePage, PostDetailsPage
   protectedRoutes/       # AuthProtRoute, MainProtRoute (route guards)
   schema/                # Zod validation schemas
   services/              # API service modules (auth, post, comment, user)
   App.jsx                # Main app component with routing
-  main.jsx               # Entry point, providers setup
+  main.jsx               # Entry point, providers setup (Auth, HeroUI, Toast)
 ```
 
 ## Current Features
 - **Authentication System**
-  - Login and Register pages with animated, accessible forms
+  - Login and Register pages
   - JWT token-based authentication (localStorage persistence)
   - Protected routes for authenticated/unauthenticated users
-  - Automatic logout on expired tokens
+  - Automatic logout on 401/expired tokens
 
 - **Form Validation**
   - Zod schemas for email, strong password, matching passwords, age (>= 18), gender
@@ -42,14 +43,21 @@ src/
 
 - **Posts Module**
   - Feed page displaying posts with user info, content, and images
-  - Post cards with like/comment counts
-  - Add post and add comment components
-  - Loading skeletons and error handling
+  - Create posts (content and/or image)
+  - Edit posts (modal) and delete posts
+  - View single post details page
+  - Add comments and view comments
+  - Pagination with a "Load more" button and preserved scroll position
+  - Loading skeletons and robust error toasts
+
+- **Profile**
+  - Profile page shows the authenticated user's posts list
 
 - **UI/UX Features**
-  - Dark/Light mode toggle (persists via localStorage)
+  - Dark/Light mode toggle (persisted via `localStorage.theme`)
   - Responsive design with glassmorphism and animated backgrounds
-  - Smooth transitions and toasts for feedback
+  - Image viewer modal
+  - Toast feedback across flows
 
 - **Layouts**
   - `AuthLayout`: vibrant animated background for auth pages
@@ -58,7 +66,10 @@ src/
 - **Routing**
   - Protected routes with React Router v7
   - Automatic redirects based on authentication
-  - Not found fallback page
+  - NotFound page fallback
+
+- **Developer Experience**
+  - React Query Devtools enabled
 
 ## Getting Started
 1. Install Node.js (LTS recommended).
@@ -80,21 +91,31 @@ src/
    ```
 
 ## Environment & Configuration
-- Auth and posts API base URLs are set in `src/services/`
+- API base URLs configured under `src/services/`
 - Token is stored in `localStorage` on login
 - Dark mode is toggled and persisted via `localStorage.theme`
 
 ## API Integration
-- **Authentication**: `https://linked-posts.routemisr.com/users/` (signup/signin)
-- **Posts**: `https://linked-posts.routemisr.com/posts` (fetch, add, comment)
-- Automatic token inclusion in API headers
-- Error handling for network/auth failures
+- **Authentication** (`https://linked-posts.routemisr.com/users/`)
+  - `POST /signup`, `POST /signin`
+  - `GET /profile-data` (requires `token` header)
+- **Posts** (`https://linked-posts.routemisr.com/posts/`)
+  - `GET /` with params: `sort=-createdAt`, `limit`, `page`
+  - `GET /:id`
+  - `POST /` (multipart: `body`, `image?`) — requires `token`
+  - `PUT /:id` (multipart: `body?`, `image?`) — requires `token`
+  - `DELETE /:id` — requires `token`
+- **Comments** (`https://linked-posts.routemisr.com/comments/`)
+  - `POST /` with JSON: `{ content, post }` — requires `token`
+- **User** (`https://linked-posts.routemisr.com/users/`)
+  - `GET /:id/posts` — requires `token`
+
+All authenticated requests include the `token` header from `localStorage`.
 
 ## Roadmap / To Do
-- edit/delete posts
-- Comment system enhancements
-- Profile page editing and avatar upload
-- Pagination/infinite scroll for feeds
+- Like/reactions system
+- Profile editing and avatar upload
+- Infinite scroll (auto-load) for feeds
 - Accessibility improvements (ARIA, keyboard nav)
 - Unit/component/integration tests
 - CI/CD pipeline and deployment configs
