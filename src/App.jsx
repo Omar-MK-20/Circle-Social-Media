@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import AuthLayout from './layouts/AuthLayout'
@@ -8,11 +9,10 @@ import LoginPage from './pages/LoginPage'
 import NotFoundPage from './pages/NotFoundPage'
 import PostDetailsPage from './pages/PostDetailsPage'
 import ProfilePage from './pages/ProfilePage'
+import ProfilePosts from './pages/profilePosts'
 import RegisterPage from './pages/RegisterPage'
 import AuthProtRoute from './protectedRoutes/AuthProtRoute'
 import MainProtRoute from './protectedRoutes/MainProtRoute'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import ProfilePosts from './pages/profilePosts'
 
 
 
