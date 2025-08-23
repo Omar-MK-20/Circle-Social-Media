@@ -12,6 +12,7 @@ import RegisterPage from './pages/RegisterPage'
 import AuthProtRoute from './protectedRoutes/AuthProtRoute'
 import MainProtRoute from './protectedRoutes/MainProtRoute'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import ProfilePosts from './pages/profilePosts'
 
 
 
@@ -26,7 +27,8 @@ const router = createBrowserRouter([
     {
         path: '', element: <MainLayout />, children: [
             { index: true, element: <MainProtRoute><FeedPage /></MainProtRoute> },
-            { path: 'profile/:id', element: <MainProtRoute><ProfilePage /></MainProtRoute> },
+            { path: 'profile/:id', element: <MainProtRoute><ProfilePosts /></MainProtRoute> },
+            { path: 'settings', element: <MainProtRoute><ProfilePage /></MainProtRoute> },
             { path: 'post-details/:id', element: <MainProtRoute><PostDetailsPage /></MainProtRoute> },
             { path: '*', element: <NotFoundPage /> }
         ]
