@@ -8,9 +8,9 @@ import { queryClient } from "../App";
 import LoadingPostComponent from "../components/LoadingPostComponent";
 import AddPostComponent from "../components/Post/AddPostComponent";
 import PostComponent from "../components/Post/PostComponent";
+import UpdatePostComponent from "../components/Post/UpdatePostComponent";
 import { AuthContext } from "../contexts/AuthContextProvider";
 import { postApi } from "../services/postService";
-import UpdatePostComponent from "../components/Post/UpdatePostComponent";
 
 
 function FeedPage() {
@@ -21,7 +21,7 @@ function FeedPage() {
 
     // useDisclosure and state for update post
     const updataPostDisclosure = useDisclosure();
-    const [ postDetailsForEdit, setPostDetailsForEdit ] = useState({})
+    const [postDetailsForEdit, setPostDetailsForEdit] = useState({})
 
 
 
@@ -30,7 +30,7 @@ function FeedPage() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const [viewImgSrc, setViewImgSrc] = useState(null);
     const scrollingElement = useRef({});
-    
+
 
 
 
@@ -51,16 +51,17 @@ function FeedPage() {
     async function handleFetchNextPage() {
         const { clientHeight, scrollHeight } = scrollingElement.current;
         const currentScroll = scrollHeight - clientHeight - 225;
-        await fetchNextPage();
         window.scrollTo(
             {
                 top: currentScroll,
                 behavior: 'smooth'
             }
         );
+        await fetchNextPage();
+
     }
 
-    function handleScrolling(e) {
+    function gettingUserUp(e) {
         const { clientHeight, scrollTop, scrollHeight } = e.target.scrollingElement;
         scrollingElement.current = { clientHeight, scrollTop, scrollHeight }
     }
@@ -95,52 +96,33 @@ function FeedPage() {
 
 
 
-    // async function handleScroll(e) 
-    // {
-    //     const { clientHeight, scrollTop, scrollHeight } = e.target.scrollingElement;
-    //     // console.log("🚀 ~ handleScroll ~ scrollHeight:", scrollHeight);
-    //     // console.log("🚀 ~ handleScroll ~ clientHeight:", clientHeight);
-    //     // console.log("🚀 ~ handleScroll ~ scrollTop:", scrollTop);
-    //     // console.log(clientHeight+scrollTop);
-    //     console.log('+++++++++++++++++++++++++++++++++++++++++++++')
+    async function handleScroll(e) {
+        const { clientHeight, scrollTop, scrollHeight } = e.target.scrollingElement;
 
-    //     if(scrollHeight-100 <= clientHeight+scrollTop && !isFetchingNextPage)
-    //     {
-    //         // console.log('scrollHeight-100 <= clientHeight+scrollTop');
-    //         // console.log('=======================================')
-    //         // console.log("🚀 ~ handleScroll ~ isFetchingNextPage: before", isFetchingNextPage)
-    //         // console.log(isFetching);
-    //         // console.log(hasNextPage);
-
-    //         console.log("🚀 ~ handleScroll ~ isFetching:", isFetching)
-    //         if(!isFetching)
-    //         {
-    //             // setIsFetchingNextPage(true)
-                
-    //             await handleFetchNextPage()
-    //             // setIsFetchingNextPage(false)
-    //         }
-    //         // console.log("🚀 ~ handleScroll ~ isFetchingNextPage: after", isFetchingNextPage)
-
-
-    //     }
-
-    // }
-
-    // handleScroll()
-
-
-
+        if (scrollHeight - 100 <= clientHeight + scrollTop && !isFetchingNextPage) {
+            if (!isFetchingNextPage) 
+            {
+                await handleFetchNextPage()
+            }
+        }
+    }
 
 
 
     useEffect(() => {
-        // document.addEventListener('scroll', handleScroll)
-        document.addEventListener('scroll', handleScrolling)
+        document.addEventListener('scroll', handleScroll)
+
+        return () => document.removeEventListener('scroll', handleScroll)
+
+    }, [ isFetchingNextPage ])
+
+
+
+    useEffect(() => {
+        document.addEventListener('scroll', gettingUserUp)
 
         return () => {
-            // document.removeEventListener('scroll', handleScroll)
-            document.removeEventListener('scroll', handleScrolling)
+            document.removeEventListener('scroll', gettingUserUp)
         }
     }, [])
 
@@ -182,7 +164,9 @@ function FeedPage() {
 
 
 
+
                 <UpdatePostComponent postIsOpen={updataPostDisclosure.isOpen} postOnOpenChange={updataPostDisclosure.onOpenChange} postDetails={postDetailsForEdit} queryKey={'posts'} />
+
 
                 <Modal backdrop="blur" isOpen={isOpen} size="xl" placement="center" scrollBehavior="outside" onOpenChange={onOpenChange}>
                     <ModalContent>
@@ -198,6 +182,8 @@ function FeedPage() {
                         )}
                     </ModalContent>
                 </Modal>
+
+
 
 
 
