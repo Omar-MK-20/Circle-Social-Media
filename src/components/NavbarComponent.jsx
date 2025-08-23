@@ -61,7 +61,7 @@ export const SunIcon = (props) => {
 
 
 function NavbarComponent() {
-    
+
     const [isLightMode, setIsLightMode] = useState(localStorage.theme ? localStorage.theme === 'light' : !window.matchMedia("(prefers-color-scheme: dark)").matches)
 
 
@@ -137,7 +137,7 @@ function NavbarComponent() {
             </NavbarBrand>
 
             <NavbarBrand className='justify-center'>
-                <Link to={'/'} viewTransition className="font-bold text-xl">CIRCLE</Link>
+                <Link to={'/'} viewTransition className="font-bold text-xl font-serif">LoopIn</Link>
             </NavbarBrand>
 
             <NavbarContent as="div" justify="end">
@@ -156,12 +156,12 @@ function NavbarComponent() {
                             />
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Profile Actions" variant="shadow">
-                            <DropdownItem onPress={() => { navigate(`/profile/${userData._id}`, { viewTransition: true }) }} key="profile" className="h-14 gap-2">
+                            <DropdownItem onPress={() => navigate('/settings', { viewTransition: true })} key="profile" className="h-14 gap-2">
                                 <p className="font-semibold">{userData.name}</p>
                                 <p className="font-semibold">{userData.email}</p>
                             </DropdownItem>
-                            <DropdownItem key="team_settings">Profile</DropdownItem>
-                            <DropdownItem onPress={() => { navigate('', { viewTransition: true }) }} key="settings">Feed Page</DropdownItem>
+                            <DropdownItem onPress={() => { navigate(`/profile/${userData._id}`, { viewTransition: true }) }} key="settings">My Posts</DropdownItem>
+                            <DropdownItem onPress={() => { navigate('', { viewTransition: true }) }} key="feedPage">Feed Page</DropdownItem>
                             {/* <DropdownItem key="analytics">Analytics</DropdownItem> */}
                             {/* <DropdownItem key="system">System</DropdownItem> */}
                             {/* <DropdownItem key="configurations">Configurations</DropdownItem> */}
