@@ -13,8 +13,8 @@ const registerSchema = zod.object(
 
         password: zod.string()
             .nonempty('Password is required')
-            .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, 
-                'Password must be at least eight characters, one letter, one number and one special character'),
+            .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, 
+                'Password must be at least eight characters, one uppercase letter, one lowercase letter, one number and one special character'),
 
         rePassword: zod.string()
             .nonempty('Confirm password is required'),
