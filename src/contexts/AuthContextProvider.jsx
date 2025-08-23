@@ -10,9 +10,11 @@ export default function AuthContextProvider({children})
 {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
     const [ userData, setUserData ] = useState(null);
+    const [isLoading, setIsLoading] = useState(true)
 
 
     async function handleUserData() {
+            // setIsLoading(true);
             const data = await userApi.getUserProfile();
             if (data.error) 
                 {
@@ -32,6 +34,7 @@ export default function AuthContextProvider({children})
                 return
             }
             setUserData(data.user);
+            setIsLoading(false)
         }
     
     
@@ -47,7 +50,7 @@ export default function AuthContextProvider({children})
 
 
     return(
-        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userData, setUserData }}>
+        <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userData, setUserData, isLoading }}>
             {children}
         </AuthContext.Provider>
     )
