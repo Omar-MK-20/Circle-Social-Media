@@ -35,6 +35,32 @@ export const userApi =
                 }
             }
         )
-        return response
+        return response;
+    },
+    
+    updatePhoto: (formData) => 
+    {
+        const response = axios.put(baseUrl + 'upload-photo', formData, 
+            {
+                headers: 
+                {
+                    token: localStorage.getItem('token')
+                }
+            }
+        )
+        return response;
+    },
+
+    updatePassword: (password, newPassword) =>
+    {
+        const response = axios.patch(baseUrl + 'change-password', { password, newPassword }, 
+            {
+                headers: 
+                {
+                    token: localStorage.getItem('token')
+                }
+            }
+        )
+        return response;
     }
 }
