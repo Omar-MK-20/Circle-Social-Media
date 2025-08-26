@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { addToast, Modal, ModalBody, ModalContent, useDisclosure } from "@heroui/react";
 import LoadingPostComponent from "../components/LoadingPostComponent";
 import PostComponent from "../components/Post/PostComponent";
+import UpdatePostComponent from "../components/Post/UpdatePostComponent";
 
 function PostDetailsPage() {
     const { id } = useParams();
@@ -11,6 +12,8 @@ function PostDetailsPage() {
     const [post, setPost] = useState(null);
     const [viewImgSrc, setViewImgSrc] = useState(null);
     const [isLoadingPost, setIsLoadingPost] = useState(true);
+    const updataPostDisclosure = useDisclosure();
+    const [postDetailsForEdit, setPostDetailsForEdit] = useState({})
 
 
     async function getOnePost() {
@@ -44,8 +47,11 @@ function PostDetailsPage() {
 
                 {
                     isLoadingPost ? <LoadingPostComponent /> :
-                    post && <PostComponent getData={getOnePost} post={post} onOpen={onOpen} setViewImgSrc={setViewImgSrc} numOfComments={undefined} />
+                    post && <PostComponent getData={getOnePost} post={post} onOpen={onOpen} setViewImgSrc={setViewImgSrc} numOfComments={undefined} setPostDetails={setPostDetailsForEdit} updataPostDisclosure={updataPostDisclosure} />
                 }
+
+
+                <UpdatePostComponent postIsOpen={updataPostDisclosure.isOpen} postOnOpenChange={updataPostDisclosure.onOpenChange} postDetails={postDetailsForEdit} queryKey={'posts'} />
 
 
                 <Modal isOpen={isOpen} size="xl" placement="center" scrollBehavior="outside" onOpenChange={onOpenChange}>
