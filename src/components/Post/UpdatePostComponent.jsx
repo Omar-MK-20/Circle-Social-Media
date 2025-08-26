@@ -103,11 +103,11 @@ function UpdatePostComponent({ postDetails, postIsOpen, postOnOpenChange, queryK
                                 </div>
                             </Form>
                             <ModalFooter>
-                                <Button color="danger" variant="flat" onPress={onClose}>
-                                    Close
+                                <Button color="warning" variant="flat" onPress={onClose}>
+                                    Cancel
                                 </Button>
                                 <Button color="primary" isLoading={isPending} onPress={() => { handleUpdatePost(); }}>
-                                    Sign in
+                                    Save
                                 </Button>
                             </ModalFooter>
                         </>
