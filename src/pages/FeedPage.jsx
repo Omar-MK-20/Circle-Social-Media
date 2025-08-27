@@ -18,6 +18,7 @@ function FeedPage() {
     dayjs.extend(relativeTime);
     const navigate = useNavigate();
     const { setIsLoggedIn } = useContext(AuthContext);
+    const pageParamRef = useRef(1)
 
     // useDisclosure and state for update post
     const updataPostDisclosure = useDisclosure();
@@ -36,7 +37,7 @@ function FeedPage() {
 
     const { data: { pages = [] } = {}, isLoading, isError, error, fetchNextPage, isFetchingNextPage, hasNextPage, refetch, isFetching } = useInfiniteQuery({
         queryKey: ['posts'],
-        queryFn: (data) => { return postApi.getAll(data.pageParam); },
+        queryFn: (data) => { return postApi.getAll(data.pageParam, ((10 + (pageParamRef.current * 2)) < 50 ? (10 + (pageParamRef.current * 2)) : 50))},
         initialPageParam: 1,
         getNextPageParam: (lastPage) => {
             if (lastPage.data.paginationInfo.nextPage) {
@@ -44,27 +45,26 @@ function FeedPage() {
             }
             return undefined;
         },
-        staleTime: 1000 * 10 * 1,
+        staleTime: 1000 * 60 * 5,
     })
 
 
     async function handleFetchNextPage() {
         const { clientHeight, scrollHeight } = scrollingElement.current;
         const currentScroll = scrollHeight - clientHeight - 225;
-        window.scrollTo(
-            {
-                top: currentScroll,
-                behavior: 'smooth'
-            }
-        );
+        // window.scrollTo(
+        //     {
+        //         top: currentScroll,
+        //         behavior: 'smooth'
+        //     }
+        // );
         await fetchNextPage();
 
     }
-
-    function gettingUserUp(e) {
-        const { clientHeight, scrollTop, scrollHeight } = e.target.scrollingElement;
-        scrollingElement.current = { clientHeight, scrollTop, scrollHeight }
-    }
+    // function gettingUserUp(e) {
+    //     const { clientHeight, scrollTop, scrollHeight } = e.target.scrollingElement;
+    //     scrollingElement.current = { clientHeight, scrollTop, scrollHeight }
+    // }
 
 
     useEffect(() => {
@@ -97,12 +97,12 @@ function FeedPage() {
 
 
     async function handleScroll(e) {
-        const { clientHeight, scrollTop, scrollHeight } = e.target.scrollingElement;
+        const { scrollTop, scrollHeight } = e.target.scrollingElement;
 
-        if (scrollHeight - 100 <= clientHeight + scrollTop && !isFetchingNextPage) {
-            if (!isFetchingNextPage) 
-            {
+        if (scrollTop >= ((3 + pageParamRef.current) / (6 + pageParamRef.current)) * scrollHeight) {
+            if (!isFetchingNextPage && hasNextPage) {
                 await handleFetchNextPage()
+                pageParamRef.current++
             }
         }
     }
@@ -114,17 +114,17 @@ function FeedPage() {
 
         return () => document.removeEventListener('scroll', handleScroll)
 
-    }, [ isFetchingNextPage ])
+    }, [isFetchingNextPage, hasNextPage])
 
 
 
-    useEffect(() => {
-        document.addEventListener('scroll', gettingUserUp)
+    // useEffect(() => {
+    //     document.addEventListener('scroll', gettingUserUp)
 
-        return () => {
-            document.removeEventListener('scroll', gettingUserUp)
-        }
-    }, [])
+    //     return () => {
+    //         document.removeEventListener('scroll', gettingUserUp)
+    //     }
+    // }, [])
 
 
 
@@ -147,7 +147,7 @@ function FeedPage() {
                                 <div key={index} className="space-y-7">
                                     {
                                         page.data.posts.map((post) => (
-                                            <PostComponent getData={refetch} key={post._id} post={post} onOpen={onOpen} setViewImgSrc={setViewImgSrc} numOfComments={1} setPostDetails={setPostDetailsForEdit} updataPostDisclosure={updataPostDisclosure} />
+                                            <PostComponent key={post._id} post={post} onOpen={onOpen} setViewImgSrc={setViewImgSrc} numOfComments={1} setPostDetails={setPostDetailsForEdit} updataPostDisclosure={updataPostDisclosure} />
                                         ))
                                     }
                                 </div>
@@ -157,7 +157,7 @@ function FeedPage() {
 
                 {!isError &&
                     <div className="w-full">
-                        <Button className="w-full" isLoading={isFetchingNextPage} isDisabled={!hasNextPage} onPress={handleFetchNextPage}>load more...</Button>
+                        <Button className="w-full" isLoading={isFetchingNextPage} isDisabled={!hasNextPage} onPress={handleFetchNextPage}>{ hasNextPage ? "load more..." : "No more to load."}</Button>
                     </div>}
 
 
@@ -182,11 +182,6 @@ function FeedPage() {
                         )}
                     </ModalContent>
                 </Modal>
-
-
-
-
-
 
             </div>
 
