@@ -44,7 +44,7 @@ export const postApi =
         return response
     },
 
-    getAll: (pageParam) => 
+    getAll: (pageParam, limit) => 
     {
         const response = axios.get(baseUrl, {
             headers:
@@ -54,7 +54,7 @@ export const postApi =
             params:
             {
                 sort: '-createdAt',
-                limit: 10,
+                limit: limit,
                 page: (`${pageParam}`)
             }
         }
