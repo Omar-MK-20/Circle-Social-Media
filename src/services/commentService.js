@@ -22,5 +22,15 @@ export const commentApi =
         {
             return !error.response ? {error: "Network Error"} : error.response.data;
         }
+    },
+    
+    update: async (content, commentId) => 
+    {
+        const response = await axios.put(baseUrl + commentId, {content: content}, {
+            headers: {
+                token: localStorage.getItem('token')
+            }
+        })
+        return response
     }
 }
