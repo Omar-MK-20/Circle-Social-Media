@@ -6,7 +6,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContextProvider';
 import { postApi } from '../../services/postService';
-import CommentComponent from '../CommentComponent';
+import CommentsContainerComponent from '../Comment/CommentsContainerComponent';
 import AddCommentComponent from './AddCommentComponent';
 
 
@@ -75,7 +75,7 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData, up
     return (
         <>
 
-            <Card isDisabled={isPending} onPress={() => navigateToPostDetails(post._id)} key={post._id} as={'div'} isPressable isBlurred className="w-full mb-0 cursor-auto">
+            <Card isDisabled={isPending} onPressUp={() => navigateToPostDetails(post._id)} key={post._id} as={'div'} isPressable isBlurred className="w-full mb-0 cursor-auto">
                 <CardHeader className='relative'>
                     {userData?._id == post.user._id &&
                         <Dropdown>
@@ -132,11 +132,11 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData, up
                 </CardFooter>
                 <AddCommentComponent getData={getData} postId={post._id} />
             </Card>
-            <Card isBlurred className='mt-1'>
+            <div className='mt-1'>
                 {post.comments &&
-                    <CommentComponent postUser={post.user} comments={post.comments} numOfComments={numOfComments} />
+                    <CommentsContainerComponent getData={getData} postUser={post.user} comments={post.comments} numOfComments={numOfComments} />
                 }
-            </Card>
+            </div>
 
 
 
