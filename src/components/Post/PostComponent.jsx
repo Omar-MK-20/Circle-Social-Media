@@ -10,7 +10,7 @@ import CommentsContainerComponent from '../Comment/CommentsContainerComponent';
 import AddCommentComponent from './AddCommentComponent';
 
 
-function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData, updataPostDisclosure, setPostDetails }) {
+function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData, updataPostDisclosure, setPostDetails, isInPostDetails }) {
 
     dayjs.extend(relativeTime);
     const navigate = useNavigate();
@@ -63,6 +63,9 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData, up
                         title: 'Post Deleted Successfully',
                         color: 'success'
                     })
+                if (isInPostDetails.current) {
+                    navigate("/");
+                }
             }
         }
     )
