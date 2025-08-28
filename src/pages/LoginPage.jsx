@@ -19,8 +19,8 @@ function LoginPage() {
         {
             defaultValues:
             {
-                "email": "omar.mohamed@email.com",
-                "password": "Omar@1234",
+                "email": "",
+                "password": "",
             },
             resolver: zodResolver(loginSchema)
             // mode: 'onBlur'
