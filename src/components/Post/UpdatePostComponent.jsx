@@ -32,7 +32,7 @@ function UpdatePostComponent({ postDetails, postIsOpen, postOnOpenChange, queryK
         }
     }
 
-    function handleUpdatePost() {
+    function handleUpdatePost(onClose) {
         if ((caption.trim().length <= 2) && !postImage) {
             return
         }
@@ -46,7 +46,11 @@ function UpdatePostComponent({ postDetails, postIsOpen, postOnOpenChange, queryK
             formData.append('image', postImage);
         }
         setFormData(formData);
-        mutate();
+        mutate(0,
+            {
+                onSuccess: () => onClose()
+            }
+        );
     }
 
     const { mutate, isPending, error} = useMutation(
@@ -65,7 +69,7 @@ function UpdatePostComponent({ postDetails, postIsOpen, postOnOpenChange, queryK
                 addToast(
                     {
                         title: 'Failed to update Post',
-                        description: error.message,
+                        description: error.response.data.error || error.message,
                         color: 'danger'
                     }
                 )
@@ -106,7 +110,7 @@ function UpdatePostComponent({ postDetails, postIsOpen, postOnOpenChange, queryK
                                 <Button color="warning" variant="flat" onPress={onClose}>
                                     Cancel
                                 </Button>
-                                <Button color="primary" isLoading={isPending} onPress={() => { handleUpdatePost(); }}>
+                                <Button color="primary" isLoading={isPending} onPress={() => handleUpdatePost(onClose)}>
                                     Save
                                 </Button>
                             </ModalFooter>
