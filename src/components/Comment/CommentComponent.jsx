@@ -1,10 +1,10 @@
-import { addToast, Avatar, Button, CardBody, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input } from '@heroui/react';
+import { addToast, Avatar, Button, CardBody, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useContext, useState } from 'react';
 import avatar from '../../assets/avatar.png';
 import { AuthContext } from '../../contexts/AuthContextProvider';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { commentApi } from '../../services/commentService';
 
 function CommentComponent({ getData, comment, postUser }) {
@@ -12,6 +12,8 @@ function CommentComponent({ getData, comment, postUser }) {
     const { userData } = useContext(AuthContext);
     const [isEditing, setIsEditing] = useState(false);
     const [commentContent, setCommentContent] = useState({ id: null, content: '' });
+    const deleteCommentWarningDisclosure = useDisclosure();
+    const queryClient = useQueryClient();
 
     function handleIsEditingComment(content, id) {
         if (isEditing) {
@@ -19,30 +21,36 @@ function CommentComponent({ getData, comment, postUser }) {
         }
         else {
             setIsEditing(true)
-            console.log(content, id)
             setCommentContent({ content: content, id: id })
         }
     }
 
     function updateComment() {
-        console.log(commentContent)
-        mutate();
+        updateMutation.mutate();
 
     }
 
-    const { mutate, error, isLoading } = useMutation(
+    function deleteComment(onClose)
+    {
+        deleteMutation.mutate(comment._id, {
+            onSuccess: () => onClose()
+        })
+    }
+
+    const updateMutation = useMutation(
         {
             mutationFn: () => commentApi.update(commentContent.content, commentContent.id),
-            onError: () => {
+            onError: (error) => {
                 addToast(
                     {
                         title: 'Failed to update comment',
-                        message: error?.response?.data?.message || error.message,
+                        description: error.response.data.error || error.message,
                         color: 'danger',
                     }
                 )
             },
             onSuccess: async () => {
+                await queryClient.invalidateQueries();
                 if (getData) {
                     await getData()
                 }
@@ -58,10 +66,39 @@ function CommentComponent({ getData, comment, postUser }) {
         }
     )
 
+    const deleteMutation = useMutation(
+        {
+            mutationFn: commentApi.delete,
+            onError: (error) => 
+            {
+                addToast(
+                    {
+                        title: 'Failed to delete Comment',
+                        description: error.response.data.message || error.message,
+                        color: 'danger'
+                    }
+                )
+            },
+            onSuccess: async () =>
+            {
+                await queryClient.invalidateQueries();
+                if (getData) {
+                    await getData()
+                }
+                addToast(
+                    {
+                        title: 'Comment deleted Successfully',
+                        color: 'success'
+                    }
+                )
+            }
+        }
+    )
+
     return (
         <>
 
-            {((userData?._id == comment.commentCreator._id) || postUser._id == userData?._id ) &&
+            {((userData?._id == comment.commentCreator._id) || postUser._id == userData?._id) &&
                 <Dropdown className='relative '>
                     <DropdownTrigger>
                         <Button color='light' className='absolute top-0 end-0 m-4 p-2'>
@@ -70,7 +107,7 @@ function CommentComponent({ getData, comment, postUser }) {
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Static Actions" variant="shadow">
                         <DropdownItem onPress={() => handleIsEditingComment(comment.content, comment._id)} key="edit">Edit</DropdownItem>
-                        <DropdownItem key="delete" className="text-danger" color="danger">
+                        <DropdownItem onPress={deleteCommentWarningDisclosure.onOpen} key="delete" className="text-danger" color="danger">
                             Delete
                         </DropdownItem>
                     </DropdownMenu>
@@ -93,7 +130,7 @@ function CommentComponent({ getData, comment, postUser }) {
                     <Input value={commentContent.content} onChange={(e) => setCommentContent({ content: e.target.value, id: commentContent.id })} />
                     <div className='flex ms-auto pt-2 space-x-2'>
                         <Button onPress={handleIsEditingComment} color="warning" variant="flat" >Cancel</Button>
-                        <Button onPress={updateComment} isLoading={isLoading} isDisabled={commentContent.content == comment.content ? true : false} color="primary" >Save</Button>
+                        <Button onPress={updateComment} isLoading={updateMutation.isPending} isDisabled={commentContent.content == comment.content ? true : false} color="primary" >Save</Button>
                     </div>
                 </CardBody>
                 :
@@ -101,6 +138,27 @@ function CommentComponent({ getData, comment, postUser }) {
                     <p className="text-sm">{comment.content}</p>
                 </CardBody>}
             <Divider />
+
+            <Modal isOpen={deleteCommentWarningDisclosure.isOpen} onOpenChange={deleteCommentWarningDisclosure.onOpenChange}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">Delete Comment</ModalHeader>
+                            <ModalBody>
+                                <p>Are you sure you want to delete this comment?</p>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="primary" variant="light" onPress={onClose}>
+                                    Cancel
+                                </Button>
+                                <Button color="danger" onPress={() => deleteComment(onClose)} isLoading={deleteMutation.isPending}>
+                                    Delete
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </>
     )
 }
