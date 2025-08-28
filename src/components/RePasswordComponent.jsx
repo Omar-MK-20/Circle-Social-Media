@@ -22,7 +22,7 @@ function RePasswordComponent() {
     );
 
 
-    const { mutate, isLoading } = useMutation(
+    const { mutate, isPending } = useMutation(
         {
             mutationFn: () => userApi.updatePassword(passwordData.password, passwordData.newPassword),
             onSuccess: () => 
@@ -39,7 +39,7 @@ function RePasswordComponent() {
                 addToast(
                     {
                         title: 'Failed to update password',
-                        description: error.message,
+                        description: error.response.data.error || error.message,
                         color: 'danger',
                     }
                 )
@@ -50,10 +50,8 @@ function RePasswordComponent() {
 
     function handleUpdatePassword(data) 
     {
-        console.log("🚀 ~ handleUpdatePassword ~ data:", data)
         const { password, newPassword } = data;
         setPasswordData({ password, newPassword });
-        console.log("🚀 ~ handleUpdatePassword ~ passwordData:", passwordData)
         mutate();
     }
 
@@ -75,7 +73,7 @@ function RePasswordComponent() {
                         <Input errorMessage={errors.confirmNewPassword?.message} isInvalid={!!errors.confirmNewPassword} label="Confirm New Password" autoComplete='new-password' type="password" {...register("confirmNewPassword")}  />
                     </div>
                     <div className="sm:col-span-2 flex justify-end mt-2">
-                        <Button color='primary' type="submit" isLoading={isLoading} >Change Password</Button>
+                        <Button color='primary' type="submit" isLoading={isPending} >Change Password</Button>
                     </div>
                 </Form>
             </div>
