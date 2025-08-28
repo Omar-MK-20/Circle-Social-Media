@@ -1,4 +1,4 @@
-import { addToast, Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@heroui/react';
+import { addToast, Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -10,15 +10,15 @@ import CommentsContainerComponent from '../Comment/CommentsContainerComponent';
 import AddCommentComponent from './AddCommentComponent';
 
 
-function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData, updataPostDisclosure ,setPostDetails }) {
+function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData, updataPostDisclosure, setPostDetails }) {
 
     dayjs.extend(relativeTime);
     const navigate = useNavigate();
     const { userData } = useContext(AuthContext);
     const queryClient = useQueryClient()
+    const deletePostWarningDisclosure = useDisclosure();
 
-    function handelUpdatePost()
-    {
+    function handelUpdatePost() {
         setPostDetails(
             {
                 id: post._id,
@@ -45,14 +45,14 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData, up
 
     }
 
-    const { mutate, isPending, error } = useMutation(
+    const { mutate, isPending } = useMutation(
         {
             mutationFn: () => postApi.deleteOne(post._id),
-            onError: () => {
+            onError: (error) => {
                 addToast(
                     {
                         title: "Delete post failed",
-                        description: error.message,
+                        description: error.response.data.error || error.message,
                         color: 'danger',
                     })
             },
@@ -67,15 +67,17 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData, up
         }
     )
 
-    function handleDeletePost() {
+    function handleDeletePost(onClose) {
         mutate();
+        onClose();
+
     }
 
 
     return (
         <>
 
-            <Card isDisabled={isPending} onPressUp={() => navigateToPostDetails(post._id)} key={post._id} as={'div'} isPressable isBlurred className="w-full mb-0 cursor-auto">
+            <Card isDisabled={isPending} onPress={() => navigateToPostDetails(post._id)} key={post._id} as={'div'} isPressable isBlurred className="w-full mb-0 cursor-auto">
                 <CardHeader className='relative'>
                     {userData?._id == post.user._id &&
                         <Dropdown>
@@ -86,7 +88,7 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData, up
                             </DropdownTrigger>
                             <DropdownMenu aria-label="Static Actions" variant="shadow">
                                 <DropdownItem onPress={handelUpdatePost} key="edit">Edit</DropdownItem>
-                                <DropdownItem onPress={handleDeletePost} isPending={isPending} key="delete" className="text-danger" color="danger">
+                                <DropdownItem onPress={deletePostWarningDisclosure.onOpen} isPending={isPending} key="delete" className="text-danger" color="danger">
                                     Delete
                                 </DropdownItem>
                             </DropdownMenu>
@@ -134,9 +136,30 @@ function PostComponent({ post, onOpen, setViewImgSrc, numOfComments, getData, up
             </Card>
             <div className='mt-1'>
                 {post.comments &&
-                    <CommentsContainerComponent getData={getData} postUser={post.user} comments={post.comments} numOfComments={numOfComments} />
+                    <CommentsContainerComponent isPendingDelete={isPending} getData={getData} postUser={post.user} comments={post.comments} numOfComments={numOfComments} />
                 }
             </div>
+
+            <Modal isOpen={deletePostWarningDisclosure.isOpen} onOpenChange={deletePostWarningDisclosure.onOpenChange}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">Delete Post</ModalHeader>
+                            <ModalBody>
+                                <p>Are you sure you want to delete this post?</p>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="primary" variant="light" onPress={onClose}>
+                                    Cancel
+                                </Button>
+                                <Button color="danger" onPress={() => handleDeletePost(onClose)}>
+                                    Delete
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
 
 
 
