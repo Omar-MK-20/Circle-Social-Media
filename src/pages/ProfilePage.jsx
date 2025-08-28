@@ -16,12 +16,10 @@ function ProfilePage() {
     const [formData, setFormData] = useState(null)
     const fileInputRef = useRef();
 
-    console.log(isLoading);
 
     // Only for preview, no logic
     const handlePhotoChange = (e) => {
         const file = e.target.files && e.target.files[0];
-        console.log("🚀 ~ handlePhotoChange ~ file:", file)
         if (file) {
             if (file.size < 2 * 1024 * 1024) { // 2MB limit
                 setPhotoPreview(URL.createObjectURL(file));
@@ -55,7 +53,7 @@ function ProfilePage() {
                 addToast(
                     {
                         title: 'Failed to update profile photo',
-                        description: error.message,
+                        description: error.response.data.error || error.message,
                         color: 'danger',
                     }
                 )
@@ -78,7 +76,7 @@ function ProfilePage() {
 
     return (
         <div className="w-full max-w-3xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">Profile Settings</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white bg-white/60 dark:bg-gray-900/60 rounded-xl shadow-lg py-3 backdrop-blur-md border border-white/20">Profile Settings</h2>
             {/* Profile Card */}
             {isLoading
                 ?
