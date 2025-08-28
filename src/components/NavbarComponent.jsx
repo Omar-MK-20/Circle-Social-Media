@@ -88,13 +88,11 @@ function NavbarComponent() {
                 document.documentElement.classList.remove('dark');
                 localStorage.theme = 'light';
                 setIsLightMode(true)
-                // console.log(window.matchMedia("(prefers-color-scheme: dark)").matches)
             }
             else {
                 document.documentElement.classList.add('dark');
                 localStorage.theme = 'dark';
                 setIsLightMode(false);
-                // console.log(window.matchMedia("(prefers-color-scheme: dark)").matches)
             }
         }
     }
