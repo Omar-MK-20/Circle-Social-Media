@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { postApi } from "../services/postService"
 import { useEffect, useState } from "react";
 import { addToast, Modal, ModalBody, ModalContent, useDisclosure } from "@heroui/react";
@@ -14,11 +14,16 @@ function PostDetailsPage() {
     const [isLoadingPost, setIsLoadingPost] = useState(true);
     const updataPostDisclosure = useDisclosure();
     const [postDetailsForEdit, setPostDetailsForEdit] = useState({})
+    const navigate = useNavigate();
 
 
     async function getOnePost() {
         const data = await postApi.getOne(id);
         if (data.error) {
+            if (data.error === "Post not found") {
+                navigate("/post-not-found");
+                return
+            }
             addToast(
                 {
                     title: "Failed getting Post",
