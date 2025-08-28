@@ -32,5 +32,16 @@ export const commentApi =
             }
         })
         return response
+    },
+
+    delete: async (commentId) => 
+    {
+        const response = await axios.delete(baseUrl + commentId, {
+            headers: 
+            {
+                token: localStorage.getItem('token')
+            }
+        })
+        return response
     }
 }
