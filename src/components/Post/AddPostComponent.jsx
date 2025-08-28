@@ -60,7 +60,6 @@ function AddPostComponent({ refetch, isFetching }) {
         if (postImage) {
             formData.append('image', postImage);
         }
-        // console.log(formData);
         setFormData(formData);
         mutate();
     }
@@ -74,7 +73,7 @@ function AddPostComponent({ refetch, isFetching }) {
             addToast(
                 {
                     title: "Sharing post failed",
-                    description: error.message,
+                    description: error.response.data.error || error.message,
                     color: 'danger',
                 }
             )
