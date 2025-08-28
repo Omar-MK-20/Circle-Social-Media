@@ -19,33 +19,76 @@ LoopIn is a modern, full-stack social media web application built with React 19,
 
 ## 📁 Project Structure
 ```
-src/
-  assets/                # Images and SVGs
-  components/            # Reusable React components
-    Post/               # Post-related components (Add, Edit, View)
-    CommentComponent.jsx # Comment display component
-    LoadingPostComponent.jsx # Loading skeleton
-    NavbarComponent.jsx # Navigation with dark mode toggle
-  contexts/              # AuthContextProvider for global auth state
-  layouts/               # Page layouts with animations
-    AuthLayout.jsx      # Animated background for auth pages
-    MainLayout.jsx      # Glass effect with fixed navbar
-  pages/                 # Application pages
-    FeedPage.jsx        # Main feed with posts
-    LoginPage.jsx       # User authentication
-    RegisterPage.jsx    # User registration
-    ProfilePage.jsx     # User profile and posts
-    PostDetailsPage.jsx # Single post view
-    NotFoundPage.jsx    # 404 error page
-  protectedRoutes/       # Route protection components
-  schema/                # Zod validation schemas
-  services/              # API service modules
-    authService.js      # Authentication endpoints
-    postService.js      # Posts CRUD operations
-    commentService.js   # Comment creation
-    userService.js      # User profile and posts
-  App.jsx                # Main app component with routing
-  main.jsx               # Entry point, providers setup (Auth, HeroUI, Toast)
+LoopIn-SocialMedia-WebApp/
+│
+├── index.html                 # Root HTML file
+├── README.md                  # Project documentation
+├── package.json               # Dependencies and scripts
+├── vite.config.js             # Vite configuration
+├── vercel.json                # Deployment config
+│
+├── public/                    # Public assets
+│   └── vite.svg
+│
+├── dist/                      # Production build output
+│   └── index.html
+│
+└── src/                       # Application source code
+    ├── App.css                # Global styles
+    ├── App.jsx                # Root component & routing
+    ├── hero.js                # Animated background utilities
+    ├── index.css              # Tailwind entry and base styles
+    ├── main.jsx               # App bootstrap & providers
+    │
+    ├── assets/                # Images and SVGs
+    │   ├── avatar.png
+    │   └── react.svg
+    │
+    ├── components/            # Reusable components
+    │   ├── NavbarComponent.jsx
+    │   ├── RePasswordComponent.jsx
+    │   ├── LoadingChPassComponent.jsx
+    │   ├── LoadingPostComponent.jsx
+    │   ├── LoadingSettingsComponent.jsx
+    │   ├── Comment/
+    │   │   ├── CommentComponent.jsx
+    │   │   └── CommentsContainerComponent.jsx
+    │   └── Post/
+    │       ├── AddCommentComponent.jsx
+    │       ├── AddPostComponent.jsx
+    │       ├── PostComponent.jsx
+    │       └── UpdatePostComponent.jsx
+    │
+    ├── contexts/
+    │   └── AuthContextProvider.jsx
+    │
+    ├── layouts/
+    │   ├── AuthLayout.jsx
+    │   └── MainLayout.jsx
+    │
+    ├── pages/
+    │   ├── FeedPage.jsx
+    │   ├── LoginPage.jsx
+    │   ├── RegisterPage.jsx
+    │   ├── ProfilePage.jsx
+    │   ├── ProfilePosts.jsx
+    │   ├── PostDetailsPage.jsx
+    │   └── NotFoundPage.jsx
+    │
+    ├── protectedRoutes/
+    │   ├── AuthProtRoute.jsx
+    │   └── MainProtRoute.jsx
+    │
+    ├── schema/
+    │   ├── loginSchema.js
+    │   ├── registerSchema.js
+    │   └── rePasswordSchema.js
+    │
+    └── services/
+        ├── authService.js
+        ├── commentService.js
+        ├── postService.js
+        └── userService.js
 ```
 
 ## ✨ Current Features
@@ -56,6 +99,7 @@ src/
 - **Protected routes** for authenticated/unauthenticated users
 - **Automatic logout** on 401/expired tokens
 - **User profile data** fetched automatically on login
+ - **Password reset/change UI** with validation
 
 ### 📝 Posts Module
 - **Feed page** displaying posts with user info, content, and images
@@ -80,6 +124,7 @@ src/
 - **Image viewer modal** for post images
 - **Toast feedback** across all user interactions
 - **Smooth transitions** and hover effects
+ - **Responsive 404 page** with glassmorphism card and adaptive SVG illustration
 
 ### 🏗️ Layouts
 - **AuthLayout**: Vibrant animated background for authentication pages
@@ -90,6 +135,7 @@ src/
 - **Automatic redirects** based on authentication status
 - **Route guards** for secure navigation
 - **NotFound page** fallback for invalid routes
+ - **Dynamic 404 messaging** via wildcard param (e.g., `post-not-found`)
 
 ### 🛠️ Developer Experience
 - **React Query Devtools** enabled for debugging
