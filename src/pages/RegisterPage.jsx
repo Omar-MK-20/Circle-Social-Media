@@ -24,15 +24,15 @@ function RegisterPage() {
         {
             defaultValues:
             {
-                "name": "omar",
-                "email": "omar@email.com",
-                "password": "Omar@1234",
-                "rePassword": "Omar@1234",
-                "dateOfBirth": "2000-02-02",
-                "gender": "male"
+                "name": "",
+                "email": "",
+                "password": "",
+                "rePassword": "",
+                "dateOfBirth": "",
+                "gender": ""
             },
-            resolver: zodResolver(registerSchema)
-            // mode: 'onBlur'
+            resolver: zodResolver(registerSchema),
+            mode: 'onBlur'
         }
     )
 
