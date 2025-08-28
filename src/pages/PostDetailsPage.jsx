@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { postApi } from "../services/postService"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { addToast, Modal, ModalBody, ModalContent, useDisclosure } from "@heroui/react";
 import LoadingPostComponent from "../components/LoadingPostComponent";
 import PostComponent from "../components/Post/PostComponent";
@@ -15,6 +15,7 @@ function PostDetailsPage() {
     const updataPostDisclosure = useDisclosure();
     const [postDetailsForEdit, setPostDetailsForEdit] = useState({})
     const navigate = useNavigate();
+    const isInPostDetails = useRef(true);
 
 
     async function getOnePost() {
@@ -52,7 +53,7 @@ function PostDetailsPage() {
 
                 {
                     isLoadingPost ? <LoadingPostComponent /> :
-                    post && <PostComponent getData={getOnePost} post={post} onOpen={onOpen} setViewImgSrc={setViewImgSrc} numOfComments={undefined} setPostDetails={setPostDetailsForEdit} updataPostDisclosure={updataPostDisclosure} />
+                    post && <PostComponent isInPostDetails={isInPostDetails} getData={getOnePost} post={post} onOpen={onOpen} setViewImgSrc={setViewImgSrc} numOfComments={undefined} setPostDetails={setPostDetailsForEdit} updataPostDisclosure={updataPostDisclosure} />
                 }
 
 
