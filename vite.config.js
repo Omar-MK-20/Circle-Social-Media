@@ -7,8 +7,8 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: 
   {
-    // open: true,
-    // host: '0.0.0.0',
+    open: true,
+    host: '0.0.0.0',
     // hmr: false
   }
 })
